@@ -5,8 +5,11 @@ import {
   watchDebounced
 } from '@vueuse/core'
 import { clamp } from 'es-toolkit/compat'
+import { storeToRefs } from 'pinia'
 import type { Ref } from 'vue'
 import { nextTick, onMounted, ref, watch } from 'vue'
+
+import { useDockingStore } from '@/stores/dockingStore'
 
 export function useDraggableMenu(
   panelRef: Ref<HTMLElement | null>,
@@ -16,6 +19,9 @@ export function useDraggableMenu(
     initialDocked?: boolean
   }
 ) {
+  const dockingStore = useDockingStore()
+  const { isMouseOverDropZone } = storeToRefs(dockingStore)
+
   const isDocked = useLocalStorage(
     `${options.localStorageKey}.Docked`,
     options.initialDocked ?? true
@@ -32,6 +38,7 @@ export function useDraggableMenu(
   const { x, y, style, isDragging } = useDraggable(panelRef, {
     initialValue: { x: 0, y: 0 },
     handle: dragHandleRef,
+    preventDefault: true,
     containerElement: document.body,
     onMove: (event) => {
       // Prevent dragging the menu over the top of the tabs
@@ -176,24 +183,9 @@ export function useDraggableMenu(
 
   useEventListener(window, 'resize', adjustMenuPosition)
 
-  // Drop zone state
-  const isMouseOverDropZone = ref(false)
-
-  // Mouse event handlers for self-contained drop zone
-  const onMouseEnterDropZone = () => {
-    if (isDragging.value) {
-      isMouseOverDropZone.value = true
-    }
-  }
-
-  const onMouseLeaveDropZone = () => {
-    if (isDragging.value) {
-      isMouseOverDropZone.value = false
-    }
-  }
-
   // Handle drag state changes
   watch(isDragging, (dragging) => {
+    dockingStore.isDragging = dragging
     if (dragging) {
       // Starting to drag - undock if docked
       if (isDocked.value) {
@@ -205,7 +197,7 @@ export function useDraggableMenu(
         isDocked.value = true
       }
       // Reset drop zone state
-      isMouseOverDropZone.value = false
+      dockingStore.isMouseOverDropZone = false
     }
   })
 
@@ -214,9 +206,6 @@ export function useDraggableMenu(
     y,
     style,
     isDragging,
-    isDocked,
-    isMouseOverDropZone,
-    onMouseEnterDropZone,
-    onMouseLeaveDropZone
+    isDocked
   }
 }

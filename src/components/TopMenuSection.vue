@@ -5,58 +5,69 @@
     @mouseenter="isTopMenuHovered = true"
     @mouseleave="isTopMenuHovered = false"
   >
-    <div class="min-w-0 flex-1">
-      <SubgraphBreadcrumb />
-    </div>
+    <div class="min-w-0 flex-1"></div>
 
     <div class="mx-1 flex flex-col items-end gap-1">
-      <div
-        class="actionbar-container pointer-events-auto flex h-12 items-center rounded-lg border border-interface-stroke px-2 shadow-interface"
-      >
-        <ActionBarButtons />
-        <!-- Support for legacy topbar elements attached by custom scripts, hidden if no elements present -->
+      <div class="flex items-center">
         <div
-          ref="legacyCommandsContainerRef"
-          class="[&:not(:has(*>*:not(:empty)))]:hidden"
-        ></div>
-        <ComfyActionbar />
-        <IconButton
-          v-tooltip.bottom="queueHistoryTooltipConfig"
-          type="transparent"
-          size="sm"
-          class="relative mr-2 text-base-foreground transition-colors duration-200 ease-in-out bg-secondary-background hover:bg-secondary-background-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-background"
-          :aria-pressed="isQueueOverlayExpanded"
-          :aria-label="
-            t('sideToolbar.queueProgressOverlay.expandCollapsedQueue')
-          "
-          @click="toggleQueueOverlay"
+          v-if="dockingStore.isDragging"
+          :class="actionbarClass"
+          @mouseenter="dockingStore.isMouseOverDropZone = true"
+          @mouseleave="dockingStore.isMouseOverDropZone = false"
         >
-          <i class="icon-[lucide--history] size-4" />
-          <span
-            v-if="queuedCount > 0"
-            class="absolute -top-1 -right-1 min-w-[16px] rounded-full bg-primary-background py-0.25 text-[10px] font-medium leading-[14px] text-white"
+          {{ t('actionbar.dockToTop') }}
+        </div>
+        <div
+          class="actionbar-container pointer-events-auto flex h-12 items-center rounded-lg border border-interface-stroke px-2 shadow-interface"
+        >
+          <div class="flex flex-1 items-center justify-end gap-2">
+            <SubgraphBreadcrumb />
+            <ComfyActionbar />
+          </div>
+          <ActionBarButtons />
+          <!-- Support for legacy topbar elements attached by custom scripts, hidden if no elements present -->
+          <div
+            ref="legacyCommandsContainerRef"
+            class="[&:not(:has(*>*:not(:empty)))]:hidden"
+          ></div>
+          <IconButton
+            v-tooltip.bottom="queueHistoryTooltipConfig"
+            type="transparent"
+            size="sm"
+            class="relative mr-2 text-base-foreground transition-colors duration-200 ease-in-out bg-secondary-background hover:bg-secondary-background-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-background"
+            :aria-pressed="isQueueOverlayExpanded"
+            :aria-label="
+              t('sideToolbar.queueProgressOverlay.expandCollapsedQueue')
+            "
+            @click="toggleQueueOverlay"
           >
-            {{ queuedCount }}
-          </span>
-        </IconButton>
-        <CurrentUserButton v-if="isLoggedIn" class="shrink-0" />
-        <LoginButton v-else-if="isDesktop" />
-        <IconButton
-          v-if="!isRightSidePanelOpen"
-          v-tooltip.bottom="rightSidePanelTooltipConfig"
-          type="transparent"
-          size="sm"
-          class="mr-2 text-base-foreground transition-colors duration-200 ease-in-out bg-secondary-background hover:bg-secondary-background-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-background"
-          :aria-label="t('rightSidePanel.togglePanel')"
-          @click="rightSidePanelStore.togglePanel"
-        >
-          <i class="icon-[lucide--panel-right] size-4" />
-        </IconButton>
+            <i class="icon-[lucide--history] size-4" />
+            <span
+              v-if="queuedCount > 0"
+              class="absolute -top-1 -right-1 min-w-[16px] rounded-full bg-primary-background py-0.25 text-[10px] font-medium leading-[14px] text-white"
+            >
+              {{ queuedCount }}
+            </span>
+          </IconButton>
+          <CurrentUserButton v-if="isLoggedIn" class="shrink-0" />
+          <LoginButton v-else-if="isDesktop" />
+          <IconButton
+            v-if="!isRightSidePanelOpen"
+            v-tooltip.bottom="rightSidePanelTooltipConfig"
+            type="transparent"
+            size="sm"
+            class="mr-2 text-base-foreground transition-colors duration-200 ease-in-out bg-secondary-background hover:bg-secondary-background-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-background"
+            :aria-label="t('rightSidePanel.togglePanel')"
+            @click="rightSidePanelStore.togglePanel"
+          >
+            <i class="icon-[lucide--panel-right] size-4" />
+          </IconButton>
+        </div>
+        <QueueProgressOverlay
+          v-model:expanded="isQueueOverlayExpanded"
+          :menu-hovered="isTopMenuHovered"
+        />
       </div>
-      <QueueProgressOverlay
-        v-model:expanded="isQueueOverlayExpanded"
-        :menu-hovered="isTopMenuHovered"
-      />
     </div>
   </div>
 </template>
@@ -76,13 +87,16 @@ import LoginButton from '@/components/topbar/LoginButton.vue'
 import { useCurrentUser } from '@/composables/auth/useCurrentUser'
 import { buildTooltipConfig } from '@/composables/useTooltipConfig'
 import { app } from '@/scripts/app'
+import { useDockingStore } from '@/stores/dockingStore'
 import { useQueueStore } from '@/stores/queueStore'
 import { useRightSidePanelStore } from '@/stores/workspace/rightSidePanelStore'
 import { useWorkspaceStore } from '@/stores/workspaceStore'
 import { isElectron } from '@/utils/envUtil'
+import { cn } from '@/utils/tailwindUtil'
 
 const workspaceStore = useWorkspaceStore()
 const rightSidePanelStore = useRightSidePanelStore()
+const dockingStore = useDockingStore()
 const { isLoggedIn } = useCurrentUser()
 const isDesktop = isElectron()
 const { t } = useI18n()
@@ -112,6 +126,17 @@ onMounted(() => {
 const toggleQueueOverlay = () => {
   isQueueOverlayExpanded.value = !isQueueOverlayExpanded.value
 }
+
+const actionbarClass = computed(() =>
+  cn(
+    'w-[200px] border-dashed border-blue-500 opacity-80',
+    'm-1.5 flex items-center justify-center self-stretch',
+    'rounded-md before:w-50 before:-ml-50 before:h-full',
+    'pointer-events-auto',
+    dockingStore.isMouseOverDropZone &&
+      'border-[3px] opacity-100 scale-105 shadow-[0_0_20px] shadow-blue-500'
+  )
+)
 </script>
 
 <style scoped>

@@ -1,15 +1,7 @@
 <template>
   <div class="flex h-full items-center">
-    <div
-      v-if="isDragging && !isDocked"
-      :class="actionbarClass"
-      @mouseenter="onMouseEnterDropZone"
-      @mouseleave="onMouseLeaveDropZone"
-    >
-      {{ t('actionbar.dockToTop') }}
-    </div>
-
     <Panel
+      v-if="visible"
       class="pointer-events-auto"
       :style="style"
       :class="panelClass"
@@ -47,20 +39,14 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  useDraggable,
-  useEventListener,
-  useLocalStorage,
-  watchDebounced
-} from '@vueuse/core'
-import { clamp } from 'es-toolkit/compat'
+import { useEventListener } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import Panel from 'primevue/panel'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 import IconButton from '@/components/button/IconButton.vue'
 import { buildTooltipConfig } from '@/composables/useTooltipConfig'
-import { t } from '@/i18n'
+import { useDraggableMenu } from '@/composables/useDraggableMenu'
 import { useSettingStore } from '@/platform/settings/settingStore'
 import { useTelemetry } from '@/platform/telemetry'
 import { useCommandStore } from '@/stores/commandStore'
@@ -76,75 +62,16 @@ const { isIdle: isExecutionIdle } = storeToRefs(useExecutionStore())
 const position = computed(() => settingsStore.get('Comfy.UseNewMenu'))
 const visible = computed(() => position.value !== 'Disabled')
 
-const tabContainer = document.querySelector('.workflow-tabs-container')
 const panelRef = ref<HTMLElement | null>(null)
 const dragHandleRef = ref<HTMLElement | null>(null)
-const isDocked = useLocalStorage('Comfy.MenuPosition.Docked', true)
-const storedPosition = useLocalStorage('Comfy.MenuPosition.Floating', {
-  x: 0,
-  y: 0
-})
-const { x, y, style, isDragging } = useDraggable(panelRef, {
-  initialValue: { x: 0, y: 0 },
-  handle: dragHandleRef,
-  containerElement: document.body,
-  onMove: (event) => {
-    // Prevent dragging the menu over the top of the tabs
-    const minY = tabContainer?.getBoundingClientRect().bottom ?? 40
-    if (event.y < minY) {
-      event.y = minY
-    }
-  }
-})
 
-// Update storedPosition when x or y changes
-watchDebounced(
-  [x, y],
-  ([newX, newY]) => {
-    storedPosition.value = { x: newX, y: newY }
-  },
-  { debounce: 300 }
+const { style, isDragging, isDocked } = useDraggableMenu(
+  panelRef,
+  dragHandleRef,
+  {
+    localStorageKey: 'Comfy.MenuPosition'
+  }
 )
-
-// Set initial position to bottom center
-const setInitialPosition = () => {
-  if (panelRef.value) {
-    const screenWidth = window.innerWidth
-    const screenHeight = window.innerHeight
-    const menuWidth = panelRef.value.offsetWidth
-    const menuHeight = panelRef.value.offsetHeight
-
-    if (menuWidth === 0 || menuHeight === 0) {
-      return
-    }
-
-    // Check if stored position exists and is within bounds
-    if (storedPosition.value.x !== 0 || storedPosition.value.y !== 0) {
-      // Ensure stored position is within screen bounds
-      x.value = clamp(storedPosition.value.x, 0, screenWidth - menuWidth)
-      y.value = clamp(storedPosition.value.y, 0, screenHeight - menuHeight)
-      captureLastDragState()
-      return
-    }
-
-    // If no stored position or current position, set to bottom center
-    if (x.value === 0 && y.value === 0) {
-      x.value = clamp((screenWidth - menuWidth) / 2, 0, screenWidth - menuWidth)
-      y.value = clamp(
-        screenHeight - menuHeight - 10,
-        0,
-        screenHeight - menuHeight
-      )
-      captureLastDragState()
-    }
-  }
-}
-onMounted(setInitialPosition)
-watch(visible, async (newVisible) => {
-  if (newVisible) {
-    await nextTick(setInitialPosition)
-  }
-})
 
 /**
  * Track run button handle drag start using mousedown on the drag handle.

@@ -12,10 +12,10 @@
     }"
     @click="onLogoMenuClick($event)"
   >
-    <div class="flex h-10 w-10 items-center justify-center rounded-lg">
+    <div class="flex h-9 w-9 items-center justify-center rounded-lg">
       <ComfyLogo
         alt="ComfyUI Logo"
-        class="h-full w-full transition-transform duration-300 ease-in-out group-hover:scale-125"
+        class="h-full w-full transition-transform duration-300 ease-in-out group-hover:scale-130"
         :size="40"
       />
     </div>
