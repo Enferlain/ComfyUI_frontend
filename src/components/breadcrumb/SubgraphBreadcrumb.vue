@@ -1,56 +1,94 @@
 <template>
-  <div
-    class="subgraph-breadcrumb w-auto drop-shadow-[var(--interface-panel-drop-shadow)]"
-    :class="{
-      'subgraph-breadcrumb-collapse': collapseTabs,
-      'subgraph-breadcrumb-overflow': overflowingTabs
-    }"
-    :style="{
-      '--p-breadcrumb-gap': `0px`,
-      '--p-breadcrumb-item-margin': `${ITEM_GAP / 2}px`,
-      '--p-breadcrumb-item-min-width': `${MIN_WIDTH}px`,
-      '--p-breadcrumb-item-padding': `${ITEM_PADDING}px`,
-      '--p-breadcrumb-icon-width': `${ICON_WIDTH}px`
-    }"
-  >
-    <Breadcrumb
-      ref="breadcrumbRef"
-      class="w-fit rounded-lg p-0"
-      :model="items"
-      :pt="{ item: { class: 'pointer-events-auto' } }"
-      :aria-label="$t('g.graphNavigation')"
+  <div class="flex h-full items-center">
+    <Panel
+      class="pointer-events-auto"
+      :style="style"
+      :class="panelClass"
+      :pt="{
+        header: { class: 'hidden' },
+        content: { class: isDocked ? 'p-0' : 'p-1' }
+      }"
     >
-      <template #item="{ item }">
-        <SubgraphBreadcrumbItem
-          :item="item"
-          :is-active="item === items.at(-1)"
+      <div ref="panelRef" class="flex items-center select-none">
+        <span
+          ref="dragHandleRef"
+          :class="
+            cn(
+              'drag-handle cursor-grab w-3 h-max mr-2',
+              isDragging && 'cursor-grabbing'
+            )
+          "
         />
-      </template>
-      <template #separator
-        ><span style="transform: scale(1.5)"> / </span></template
-      >
-    </Breadcrumb>
+        <div
+          class="subgraph-breadcrumb w-auto drop-shadow-[var(--interface-panel-drop-shadow)]"
+          :class="{
+            'subgraph-breadcrumb-collapse': collapseTabs,
+            'subgraph-breadcrumb-overflow': overflowingTabs
+          }"
+          :style="{
+            '--p-breadcrumb-gap': `0px`,
+            '--p-breadcrumb-item-margin': `${ITEM_GAP / 2}px`,
+            '--p-breadcrumb-item-min-width': `${MIN_WIDTH}px`,
+            '--p-breadcrumb-item-padding': `${ITEM_PADDING}px`,
+            '--p-breadcrumb-icon-width': `${ICON_WIDTH}px`
+          }"
+        >
+          <Breadcrumb
+            ref="breadcrumbRef"
+            class="w-fit rounded-lg p-0"
+            :model="items"
+            :pt="{ item: { class: 'pointer-events-auto' } }"
+            :aria-label="$t('g.graphNavigation')"
+          >
+            <template #item="{ item }">
+              <SubgraphBreadcrumbItem
+                :item="item"
+                :is-active="item === items.at(-1)"
+              />
+            </template>
+            <template #separator
+              ><span style="transform: scale(1.5)"> / </span></template
+            >
+          </Breadcrumb>
+        </div>
+      </div>
+    </Panel>
   </div>
 </template>
 
 <script setup lang="ts">
 import Breadcrumb from 'primevue/breadcrumb'
 import type { MenuItem } from 'primevue/menuitem'
+import Panel from 'primevue/panel'
 import { computed, onUpdated, ref, watch } from 'vue'
 
 import SubgraphBreadcrumbItem from '@/components/breadcrumb/SubgraphBreadcrumbItem.vue'
 import { useOverflowObserver } from '@/composables/element/useOverflowObserver'
+import { useDraggableMenu } from '@/composables/useDraggableMenu'
 import { useTelemetry } from '@/platform/telemetry'
 import { useWorkflowStore } from '@/platform/workflow/management/stores/workflowStore'
 import { useCanvasStore } from '@/renderer/core/canvas/canvasStore'
 import { useSubgraphNavigationStore } from '@/stores/subgraphNavigationStore'
 import { useSubgraphStore } from '@/stores/subgraphStore'
 import { forEachSubgraphNode } from '@/utils/graphTraversalUtil'
+import { cn } from '@/utils/tailwindUtil'
 
 const MIN_WIDTH = 28
 const ITEM_GAP = 8
 const ITEM_PADDING = 8
 const ICON_WIDTH = 20
+
+const panelRef = ref<HTMLElement | null>(null)
+const dragHandleRef = ref<HTMLElement | null>(null)
+
+const { style, isDragging, isDocked } = useDraggableMenu(
+  panelRef,
+  dragHandleRef,
+  {
+    localStorageKey: 'Comfy.BreadcrumbPosition',
+    initialDocked: true
+  }
+)
 
 const workflowStore = useWorkflowStore()
 const navigationStore = useSubgraphNavigationStore()
@@ -167,6 +205,16 @@ onUpdated(() => {
     overflowObserver?.checkOverflow()
   }
 })
+
+const panelClass = computed(() =>
+  cn(
+    'actionbar pointer-events-auto z-1300',
+    isDragging.value && 'select-none pointer-events-none',
+    isDocked.value
+      ? 'p-0 static border-none bg-transparent'
+      : 'fixed shadow-interface'
+  )
+)
 </script>
 
 <style scoped>
@@ -207,7 +255,7 @@ onUpdated(() => {
 
 :deep(.p-breadcrumb-separator),
 :deep(.p-breadcrumb-item) {
-  @apply h-12;
+  @apply h-9;
   border-top: 1px solid var(--interface-stroke);
   border-bottom: 1px solid var(--interface-stroke);
   background-color: var(--comfy-menu-bg);

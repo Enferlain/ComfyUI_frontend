@@ -7,7 +7,7 @@
     }"
     draggable="false"
     href="#"
-    class="p-breadcrumb-item-link h-12 cursor-pointer px-2"
+    class="p-breadcrumb-item-link h-9 cursor-pointer px-2"
     :class="{
       'flex items-center gap-1': isActive,
       'p-breadcrumb-item-link-menu-visible': menu?.overlayVisible,

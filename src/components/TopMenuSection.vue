@@ -5,12 +5,21 @@
     @mouseenter="isTopMenuHovered = true"
     @mouseleave="isTopMenuHovered = false"
   >
-    <div class="min-w-0 flex-1">
-      <SubgraphBreadcrumb />
-    </div>
+    <div class="min-w-0 flex-1"></div>
 
     <div class="mx-1 flex flex-col items-end gap-1">
       <div class="flex items-center gap-2">
+        <!-- OUR Custom Docking Dropzone -->
+        <div
+          v-if="dockingStore.isDragging"
+          :class="actionbarClass"
+          @mouseenter="dockingStore.isMouseOverDropZone = true"
+          @mouseleave="dockingStore.isMouseOverDropZone = false"
+        >
+          {{ t('actionbar.dockToTop') }}
+        </div>
+
+        <!-- UPSTREAM: Custom Nodes Manager Button (Migrated to Button) -->
         <div
           v-if="managerState.shouldShowManagerButtons.value && isDesktop"
           class="pointer-events-auto flex h-12 shrink-0 items-center rounded-lg border border-interface-stroke bg-comfy-menu-bg px-2 shadow-interface"
@@ -29,17 +38,25 @@
         <div
           class="actionbar-container pointer-events-auto flex gap-2 h-12 items-center rounded-lg border border-interface-stroke bg-comfy-menu-bg px-2 shadow-interface"
         >
+          <!-- OUR Custom Breadcrumb Layout + Actionbar -->
+          <div class="flex flex-1 items-center justify-end gap-2">
+            <SubgraphBreadcrumb />
+            <ComfyActionbar />
+          </div>
           <ActionBarButtons />
-          <!-- Support for legacy topbar elements attached by custom scripts, hidden if no elements present -->
+
+          <!-- Support for legacy topbar elements attached by custom scripts -->
           <div
             ref="legacyCommandsContainerRef"
             class="[&:not(:has(*>*:not(:empty)))]:hidden"
           ></div>
-          <ComfyActionbar />
+
+          <!-- LUMI MERGE: Migrated from IconButton to Button -->
           <Button
             v-tooltip.bottom="queueHistoryTooltipConfig"
-            type="destructive"
+            variant="secondary"
             size="icon"
+            class="relative"
             :aria-pressed="isQueueOverlayExpanded"
             :aria-label="
               t('sideToolbar.queueProgressOverlay.expandCollapsedQueue')
@@ -59,7 +76,7 @@
           <Button
             v-if="!isRightSidePanelOpen"
             v-tooltip.bottom="rightSidePanelTooltipConfig"
-            type="secondary"
+            variant="secondary"
             size="icon"
             :aria-label="t('rightSidePanel.togglePanel')"
             @click="rightSidePanelStore.togglePanel"
@@ -92,15 +109,19 @@ import { useCurrentUser } from '@/composables/auth/useCurrentUser'
 import { useErrorHandling } from '@/composables/useErrorHandling'
 import { buildTooltipConfig } from '@/composables/useTooltipConfig'
 import { app } from '@/scripts/app'
+import { useDockingStore } from '@/stores/dockingStore'
 import { useQueueStore } from '@/stores/queueStore'
 import { useRightSidePanelStore } from '@/stores/workspace/rightSidePanelStore'
 import { useWorkspaceStore } from '@/stores/workspaceStore'
 import { isElectron } from '@/utils/envUtil'
+import { cn } from '@/utils/tailwindUtil'
 import { useManagerState } from '@/workbench/extensions/manager/composables/useManagerState'
 import { ManagerTab } from '@/workbench/extensions/manager/types/comfyManagerTypes'
 
 const workspaceStore = useWorkspaceStore()
 const rightSidePanelStore = useRightSidePanelStore()
+// LUMI MERGE: Removed executionStore and commandStore since the button moved
+const dockingStore = useDockingStore()
 const managerState = useManagerState()
 const { isLoggedIn } = useCurrentUser()
 const isDesktop = isElectron()
@@ -136,6 +157,19 @@ const toggleQueueOverlay = () => {
   isQueueOverlayExpanded.value = !isQueueOverlayExpanded.value
 }
 
+// LUMI MERGE: Removed cancelCurrentJob function
+
+const actionbarClass = computed(() =>
+  cn(
+    'w-[200px] border-dashed border-blue-500 opacity-80',
+    'm-1.5 flex items-center justify-center self-stretch',
+    'rounded-md before:w-50 before:-ml-50 before:h-full',
+    'pointer-events-auto',
+    dockingStore.isMouseOverDropZone &&
+      'border-[3px] opacity-100 scale-105 shadow-[0_0_20px] shadow-blue-500'
+  )
+)
+
 const openCustomNodeManager = async () => {
   try {
     await managerState.openManager({
@@ -152,3 +186,9 @@ const openCustomNodeManager = async () => {
   }
 }
 </script>
+
+<style scoped>
+.actionbar-container {
+  background-color: var(--comfy-menu-bg);
+}
+</style>
