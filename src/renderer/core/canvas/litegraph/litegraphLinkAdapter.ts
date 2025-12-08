@@ -110,7 +110,7 @@ export class LitegraphLinkAdapter {
       colors: {
         default: String(context.defaultLinkColor),
         byType: this.convertColorMap(context.linkTypeColors),
-        highlighted: '#FFF'
+        highlighted: '#8b5cf6'
       },
       patterns: {
         disabled: context.disabledPattern
