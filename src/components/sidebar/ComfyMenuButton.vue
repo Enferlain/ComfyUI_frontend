@@ -5,17 +5,17 @@
       showDelay: 300,
       hideDelay: 300
     }"
-    class="comfy-menu-button-wrapper flex shrink-0 cursor-pointer flex-col items-center justify-center p-2 transition-colors"
+    class="comfy-menu-button-wrapper group flex shrink-0 cursor-pointer flex-col items-center justify-center p-2 transition-colors"
     :class="{
       'comfy-menu-button-active': menuRef?.visible
     }"
     @click="onLogoMenuClick($event)"
   >
-    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-black">
+    <div class="flex h-10 w-10 items-center justify-center rounded-lg">
       <ComfyLogo
         alt="ComfyUI Logo"
-        class="comfyui-logo h-[18px] w-[18px] text-white"
-        mode="fill"
+        class="h-full w-full transition-transform duration-300 ease-in-out group-hover:scale-125"
+        :size="40"
       />
     </div>
   </div>
