@@ -3,35 +3,108 @@
     :class="iconClass"
     :width="size"
     :height="size"
-    viewBox="0 0 18 18"
+    viewBox="-160 -160 320 320"
     xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet"
   >
-    <path
-      d="M14.8193 0.600586C15.1248 0.600586 15.3296 0.70893 15.459 0.881836C15.5914 1.05888 15.6471 1.33774 15.5527 1.66895L14.8037 4.30176C14.7063 4.64386 14.4729 4.97024 14.1641 5.21191C13.8544 5.45415 13.496 5.58984 13.1699 5.58984H13.1689L9.5791 5.59668H7.90625C7.52654 5.59668 7.19496 5.84986 7.09082 6.21289L5.69434 11.0889C5.63007 11.3133 5.66134 11.5534 5.77734 11.7529L5.83203 11.8359C5.99177 12.0491 6.24252 12.1758 6.50977 12.1758H6.51074L8.88281 12.1709H11.4971C11.7643 12.171 11.9541 12.254 12.084 12.3906L12.1357 12.4521C12.2685 12.6295 12.3249 12.9089 12.2305 13.2402L11.4805 15.8721C11.383 16.2144 11.1498 16.5415 10.8408 16.7832C10.5314 17.0252 10.1736 17.161 9.84766 17.1611H9.84668L6.25684 17.168H3.64258C3.33762 17.1679 3.13349 17.0588 3.00391 16.8857C2.87135 16.7087 2.81482 16.43 2.90918 16.0986L3.39551 14.3887C3.46841 14.1327 3.41794 13.8576 3.25879 13.6445V13.6436C3.09901 13.4303 2.84745 13.3037 2.58008 13.3037H1.18066C0.875088 13.3037 0.670398 13.1953 0.541016 13.0225C0.408483 12.8451 0.351891 12.5655 0.446289 12.2344L2.11914 6.38965L2.30371 5.74707V5.74609C2.40139 5.40341 2.63456 5.07671 2.94336 4.83496C3.25302 4.59258 3.61143 4.45705 3.9375 4.45703H5.6123C5.94484 4.45703 6.24083 4.26316 6.37891 3.9707L6.42773 3.83984L6.98145 1.89551C7.07894 1.55317 7.31212 1.22614 7.62109 0.984375C7.93074 0.742127 8.2892 0.606445 8.61523 0.606445H8.61621L12.1982 0.600586H14.8193Z"
-      v-bind="attributes"
-    />
+    <g>
+      <g transform="rotate(0)">
+        <g transform="rotate(0)">
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140 L 0 0 Z"
+            fill="#8060b0"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="none"
+            stroke="#2a2c58"
+            stroke-width="12"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        </g>
+        <g transform="rotate(90)">
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="#8060b0"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="none"
+            stroke="#2a2c58"
+            stroke-width="12"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        </g>
+        <g transform="rotate(180)">
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="none"
+            stroke="#2a2c58"
+            stroke-width="12"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        </g>
+        <g transform="rotate(270)">
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140 L 0 0 Z"
+            fill="#554b98"
+            stroke="none"
+          />
+          <path
+            d="M 0 0  L 58 -57.4 Q 41.76 -103.656 0 -140  Q -41.76 -103.656 -58 -57.4 L 0 0 Z"
+            fill="none"
+            stroke="#2a2c58"
+            stroke-width="12"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+        </g>
+      </g>
+    </g>
   </svg>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 
+// We keep the Props interface compatible with the previous component
+// so standard sizing still works.
 interface Props {
   size?: number | string
-  color?: string
   class?: string
-  mode?: 'outline' | 'fill'
 }
-const {
-  size = 16,
-  color = 'currentColor',
-  mode = 'outline',
-  class: className
-} = defineProps<Props>()
+
+const { size = 16, class: className } = defineProps<Props>()
+
 const iconClass = computed(() => className || '')
-const attributes = computed(() => ({
-  stroke: mode === 'outline' ? color : undefined,
-  strokeWidth: mode === 'outline' ? 1 : undefined,
-  fill: mode === 'fill' ? color : 'none'
-}))
 </script>
