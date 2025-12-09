@@ -1,1 +1,222 @@
 @import '@comfyorg/design-system/css/style.css';
+
+/* ==========================================================================
+   LUMI'S KURO THEME OVERRIDES
+   "Banish the Boring Gray!"
+   ========================================================================== */
+
+:root, .dark-theme {
+
+    /* --- 1. THE PRIMARY ACCENT (The "Run" Button) --- */
+    /* We use NEON CYAN (#06b6d4) to contrast with the Purple UI */
+    
+    /* Base Primary Colors (Used globally) */
+    --p-primary-400: #8b5cf6 !important; /* Violet Base */
+    --p-primary-300: #a78bfa !important; /* Violet Lighter (Hover) */
+    --p-primary-200: #c4b5fd !important; /* Violet Lightest (Active) */
+    
+    /* Map to PrimeVue Generics */
+    --p-primary-color: var(--p-primary-400) !important;
+    --p-primary-hover-color: var(--p-primary-300) !important;
+    --p-primary-active-color: var(--p-primary-200) !important;
+    
+    /* Text Color: White looks best on Violet */
+    --p-primary-contrast-color: #ffffff !important; 
+
+    /* Highlights (Selection glow) - Violet with transparency */
+    /* RGB of #8b5cf6 is 139, 92, 246 */
+    --p-highlight-background: rgba(139, 92, 246, 0.15) !important;
+    --p-highlight-focus-background: rgba(139, 92, 246, 0.25) !important;
+    --p-highlight-color: #a78bfa !important;
+
+    /* --- SPECIFIC BUTTON OVERRIDES (Your Custom Style) --- */
+    /* Using the dark menu background for the border makes it look clean! */
+    --p-button-primary-background: #8b5cf6 !important;
+    --p-button-primary-border-color: #232034 !important; 
+    
+    --p-button-primary-hover-background: #a78bfa !important;
+    --p-button-primary-hover-border-color: #a78bfa !important; /* Border lights up on hover */
+    
+    --p-button-primary-active-background: #7c3aed !important; /* Darker purple on click */
+
+    /* --- 2. THE KURO SURFACES (Mapping the Grayscale to Purple) --- */
+    
+    /* SURFACE 900-950: The Deepest Backgrounds (Canvas/Inputs) */
+    --p-surface-950: #181625 !important;
+    --p-surface-900: #181625 !important; 
+    
+    /* SURFACE 800: The Panels/Menus/Popups */
+    --p-surface-800: #232034 !important;
+    
+    /* SURFACE 700-600: Borders & Dividers */
+    --p-surface-700: #3E3B5E !important;
+    --p-surface-600: #4B476E !important;
+    
+    /* SURFACE 500-400: Muted Text/Icons */
+    --p-surface-500: #5B5680 !important;
+    --p-surface-400: #948FB2 !important;
+    
+    /* SURFACE 0-100: Primary Text (Light) */
+    --p-surface-0: #E2E0EC !important;  /* Main Text */
+    --p-surface-50: #E2E0EC !important;
+    --p-surface-100: #E2E0EC !important;
+
+
+    /* --- 3. CHARCOAL PALETTE SWAP (For non-PrimeVue elements) --- */
+    --color-charcoal-800: #181625 !important;
+    --color-charcoal-700: #1b1929 !important;
+    --color-charcoal-600: #232034 !important;
+    --color-charcoal-500: #2b2840 !important;
+    --color-charcoal-400: #3E3B5E !important;
+    --color-charcoal-200: #5B5680 !important;
+    --color-black: #181625 !important;
+    --color-neutral-900: #181625 !important;
+
+
+    /* --- 4. DEEP COMPONENT INTEGRATION (From your list!) --- */
+    
+    /* Form Fields (Inputs) */
+    --p-form-field-background: #181625 !important;
+    --p-form-field-color: #E2E0EC !important;
+    --p-form-field-border-color: #3E3B5E !important;
+    --p-form-field-focus-border-color: var(--p-primary-color) !important;
+    
+    /* Content Panels */
+    --p-content-background: #232034 !important; /* Menu BG */
+    --p-content-border-color: #3E3B5E !important;
+    --p-content-color: #E2E0EC !important;
+    
+    /* Overlays/Popovers (Dropdowns) */
+    --p-overlay-select-background: #232034 !important;
+    --p-overlay-popover-background: #232034 !important;
+    --p-overlay-modal-background: #232034 !important;
+    
+    /* List Options (The items inside the dropdown) */
+    --p-list-option-color: #E2E0EC !important;
+    --p-list-option-focus-background: #2b2840 !important; /* Hover state */
+    --p-list-option-selected-background: var(--p-highlight-background) !important;
+    --p-list-option-selected-color: var(--p-highlight-color) !important;
+    
+    /* Navigation */
+    --p-navigation-item-color: #E2E0EC !important;
+    --p-navigation-item-active-background: #2b2840 !important;
+
+    /* Tooltips */
+    --p-tooltip-background: #3E3B5E !important;
+    --p-tooltip-text-color: #E2E0EC !important;
+    --p-tooltip-arrow-background: #3E3B5E !important;
+}
+
+/* ==========================================================================
+   TERMINAL COLOR FIX (The "Paint Everything" Edition)
+   ========================================================================== */
+
+/* 1. LAYER 1: The Outermost Shell */
+.p-terminal {
+    background-color: #181625 !important;
+}
+
+/* 2. LAYER 2: The Inner Screen wrapper */
+.p-terminal .xterm-screen {
+    background-color: #181625 !important;
+}
+
+/* 3. LAYER 3: The Viewport (The thing that actually scrolls) */
+/* This is the culprit! If this is black, the scrollbar track looks black. */
+/* Confirmed inner left scroll bar section */
+.p-terminal .xterm-viewport {
+    background-color: #181625 !important;
+}
+
+/* 4. THE SCROLLBAR ITSELF */
+/* Now that the background is purple, we style the bar on top of it */
+
+/* Width of the bar */
+.p-terminal .xterm-viewport::-webkit-scrollbar {
+    width: 12px;
+    background-color: #181625 !important; /* Match the layers below */
+}
+
+/* The Track (The lane) - Make it transparent so the purple layers show through */
+.p-terminal .xterm-viewport::-webkit-scrollbar-track {
+    background-color: #232034 !important; 
+    border: 3px !important;
+    margin: 0 !important;
+}
+
+/* The Thumb (The Handle) */
+.p-terminal .xterm-viewport::-webkit-scrollbar-thumb {
+    background-color: #895cef !important; /* Kuro Border Color */
+    border-radius: 6px;
+    border: 3px solid #232034 !important; /* Creates a "floating" effect */
+}
+
+/* The Corner */
+/* Can't see any effect for this */
+/*.p-terminal .xterm-viewport::-webkit-scrollbar-corner {
+/*    background-color: #181625 !important;
+/*}
+
+/* --- OPTIONAL: Force Component Text --- */
+/* If text is STILL invisible in specific spots, this forces all PrimeVue components to use light text */
+.p-component, .p-component span, .comfy-menu span {
+    color: #E2E0EC; 
+}
+/* Revert the color for things that explicitly want to be muted */
+.p-text-secondary, .text-muted {
+    color: #948FB2 !important;
+}
+
+/* --- LOADING ANIMATION --- */
+.kuro-loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #181625;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kuro-loader {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* No gap needed anymore since there's no text */
+    
+    /* THE FLOAT ANIMATION */
+    /* Moves up and down smoothly over 3 seconds */
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Define the floating motion */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px); /* Moves up 15 pixels */
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.kuro-text {
+    font-family: 'Inter', sans-serif;
+    color: #E2E0EC;
+    letter-spacing: 0.2em;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: fade-text 2s infinite ease-in-out;
+}
+
+
+@keyframes fade-text {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}

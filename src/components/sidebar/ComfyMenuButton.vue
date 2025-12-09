@@ -12,9 +12,10 @@
     @click="onLogoMenuClick($event)"
   >
     <div class="flex h-9 w-9 items-center justify-center rounded-lg">
+      <!-- LUMI UPDATE: Added drop-shadow to the group-hover state -->
       <ComfyLogo
         alt="ComfyUI Logo"
-        class="h-full w-full transition-transform duration-300 ease-in-out group-hover:scale-130"
+        class="h-full w-full transition-all duration-300 ease-in-out group-hover:scale-120 group-hover:drop-shadow-[0_0_3px_#8b5cf6]"
         :size="40"
       />
     </div>
