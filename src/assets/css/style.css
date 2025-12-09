@@ -105,6 +105,10 @@
     --p-tooltip-background: #3E3B5E !important;
     --p-tooltip-text-color: #E2E0EC !important;
     --p-tooltip-arrow-background: #3E3B5E !important;
+
+    /* NEW! Mapping for the official menu variables */
+    --interface-menu-surface: var(--color-charcoal-600) !important; /* Our Menu BG */
+    --interface-menu-stroke: var(--color-charcoal-400) !important;  /* Our Border Purple */
 }
 
 /* ==========================================================================
