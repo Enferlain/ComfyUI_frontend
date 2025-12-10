@@ -15,7 +15,7 @@
       <!-- LUMI UPDATE: Added drop-shadow to the group-hover state -->
       <ComfyLogo
         alt="ComfyUI Logo"
-        class="h-full w-full transition-all duration-300 ease-in-out group-hover:scale-120 group-hover:drop-shadow-[0_0_3px_#8b5cf6]"
+        class="h-full w-full transition-all duration-300 ease-in-out group-hover:scale-130 group-hover:drop-shadow-[0_0_3px_#8b5cf6]"
         :size="40"
       />
     </div>
