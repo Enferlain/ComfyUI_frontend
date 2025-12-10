@@ -9,6 +9,7 @@
 
     <div class="mx-1 flex flex-col items-end gap-1">
       <div class="flex items-center">
+        <!-- OUR Custom Docking Dropzone -->
         <div
           v-if="dockingStore.isDragging"
           :class="actionbarClass"
@@ -17,30 +18,25 @@
         >
           {{ t('actionbar.dockToTop') }}
         </div>
+
         <div
           class="actionbar-container pointer-events-auto flex h-12 items-center rounded-lg border border-interface-stroke px-2 shadow-interface"
         >
+          <!-- OUR Custom Breadcrumb Layout -->
           <div class="flex flex-1 items-center justify-end gap-2">
             <SubgraphBreadcrumb />
             <ComfyActionbar />
           </div>
           <ActionBarButtons />
-          <!-- Support for legacy topbar elements attached by custom scripts, hidden if no elements present -->
+
+          <!-- Support for legacy topbar elements attached by custom scripts -->
           <div
             ref="legacyCommandsContainerRef"
             class="[&:not(:has(*>*:not(:empty)))]:hidden"
           ></div>
-          <IconButton
-            v-tooltip.bottom="cancelJobTooltipConfig"
-            type="transparent"
-            size="sm"
-            class="mr-2 bg-destructive-background text-base-foreground transition-colors duration-200 ease-in-out hover:bg-destructive-background-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-destructive-background"
-            :disabled="isExecutionIdle"
-            :aria-label="t('menu.interrupt')"
-            @click="cancelCurrentJob"
-          >
-            <i class="icon-[lucide--x] size-4" />
-          </IconButton>
+
+          <!-- LUMI MERGE: Removed the old Cancel/Interrupt IconButton from here -->
+
           <IconButton
             v-tooltip.bottom="queueHistoryTooltipConfig"
             type="transparent"
@@ -98,9 +94,7 @@ import LoginButton from '@/components/topbar/LoginButton.vue'
 import { useCurrentUser } from '@/composables/auth/useCurrentUser'
 import { buildTooltipConfig } from '@/composables/useTooltipConfig'
 import { app } from '@/scripts/app'
-import { useCommandStore } from '@/stores/commandStore'
 import { useDockingStore } from '@/stores/dockingStore'
-import { useExecutionStore } from '@/stores/executionStore'
 import { useQueueStore } from '@/stores/queueStore'
 import { useRightSidePanelStore } from '@/stores/workspace/rightSidePanelStore'
 import { useWorkspaceStore } from '@/stores/workspaceStore'
@@ -109,8 +103,7 @@ import { cn } from '@/utils/tailwindUtil'
 
 const workspaceStore = useWorkspaceStore()
 const rightSidePanelStore = useRightSidePanelStore()
-const executionStore = useExecutionStore()
-const commandStore = useCommandStore()
+// LUMI MERGE: Removed executionStore and commandStore since the button moved
 const dockingStore = useDockingStore()
 const { isLoggedIn } = useCurrentUser()
 const isDesktop = isElectron()
@@ -122,13 +115,9 @@ const queuedCount = computed(() => queueStore.pendingTasks.length)
 const queueHistoryTooltipConfig = computed(() =>
   buildTooltipConfig(t('sideToolbar.queueProgressOverlay.viewJobHistory'))
 )
-const cancelJobTooltipConfig = computed(() =>
-  buildTooltipConfig(t('menu.interrupt'))
-)
 
 // Right side panel toggle
 const { isOpen: isRightSidePanelOpen } = storeToRefs(rightSidePanelStore)
-const { isIdle: isExecutionIdle } = storeToRefs(executionStore)
 const rightSidePanelTooltipConfig = computed(() =>
   buildTooltipConfig(t('rightSidePanel.togglePanel'))
 )
@@ -146,10 +135,7 @@ const toggleQueueOverlay = () => {
   isQueueOverlayExpanded.value = !isQueueOverlayExpanded.value
 }
 
-const cancelCurrentJob = async () => {
-  if (isExecutionIdle.value) return
-  await commandStore.execute('Comfy.Interrupt')
-}
+// LUMI MERGE: Removed cancelCurrentJob function
 
 const actionbarClass = computed(() =>
   cn(

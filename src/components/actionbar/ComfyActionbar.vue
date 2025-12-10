@@ -22,6 +22,8 @@
         />
 
         <ComfyRunButton />
+
+        <!-- LUMI MERGE: Added Upstream's Cancel Button here -->
         <IconButton
           v-tooltip.bottom="cancelJobTooltipConfig"
           type="transparent"
@@ -43,10 +45,11 @@ import { useEventListener } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import Panel from 'primevue/panel'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/components/button/IconButton.vue'
-import { buildTooltipConfig } from '@/composables/useTooltipConfig'
 import { useDraggableMenu } from '@/composables/useDraggableMenu'
+import { buildTooltipConfig } from '@/composables/useTooltipConfig'
 import { useSettingStore } from '@/platform/settings/settingStore'
 import { useTelemetry } from '@/platform/telemetry'
 import { useCommandStore } from '@/stores/commandStore'
@@ -57,7 +60,18 @@ import ComfyRunButton from './ComfyRunButton'
 
 const settingsStore = useSettingStore()
 const commandStore = useCommandStore()
+const { t } = useI18n()
+
+// Execution logic for the Cancel button
 const { isIdle: isExecutionIdle } = storeToRefs(useExecutionStore())
+const cancelJobTooltipConfig = computed(() =>
+  buildTooltipConfig(t('menu.interrupt'))
+)
+
+const cancelCurrentJob = async () => {
+  if (isExecutionIdle.value) return
+  await commandStore.execute('Comfy.Interrupt')
+}
 
 const position = computed(() => settingsStore.get('Comfy.UseNewMenu'))
 const visible = computed(() => position.value !== 'Disabled')
@@ -65,6 +79,7 @@ const visible = computed(() => position.value !== 'Disabled')
 const panelRef = ref<HTMLElement | null>(null)
 const dragHandleRef = ref<HTMLElement | null>(null)
 
+// We keep OUR Draggable composable logic
 const { style, isDragging, isDocked } = useDraggableMenu(
   panelRef,
   dragHandleRef,
@@ -82,139 +97,6 @@ useEventListener(dragHandleRef, 'mousedown', () => {
   })
 })
 
-const lastDragState = ref({
-  x: x.value,
-  y: y.value,
-  windowWidth: window.innerWidth,
-  windowHeight: window.innerHeight
-})
-const captureLastDragState = () => {
-  lastDragState.value = {
-    x: x.value,
-    y: y.value,
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight
-  }
-}
-watch(
-  isDragging,
-  (newIsDragging) => {
-    if (!newIsDragging) {
-      // Stop dragging
-      captureLastDragState()
-    }
-  },
-  { immediate: true }
-)
-
-const adjustMenuPosition = () => {
-  if (panelRef.value) {
-    const screenWidth = window.innerWidth
-    const screenHeight = window.innerHeight
-    const menuWidth = panelRef.value.offsetWidth
-    const menuHeight = panelRef.value.offsetHeight
-
-    // Calculate distances to all edges
-    const distanceLeft = lastDragState.value.x
-    const distanceRight =
-      lastDragState.value.windowWidth - (lastDragState.value.x + menuWidth)
-    const distanceTop = lastDragState.value.y
-    const distanceBottom =
-      lastDragState.value.windowHeight - (lastDragState.value.y + menuHeight)
-
-    // Find the smallest distance to determine which edge to anchor to
-    const distances = [
-      { edge: 'left', distance: distanceLeft },
-      { edge: 'right', distance: distanceRight },
-      { edge: 'top', distance: distanceTop },
-      { edge: 'bottom', distance: distanceBottom }
-    ]
-    const closestEdge = distances.reduce((min, curr) =>
-      curr.distance < min.distance ? curr : min
-    )
-
-    // Calculate vertical position as a percentage of screen height
-    const verticalRatio =
-      lastDragState.value.y / lastDragState.value.windowHeight
-    const horizontalRatio =
-      lastDragState.value.x / lastDragState.value.windowWidth
-
-    // Apply positioning based on closest edge
-    if (closestEdge.edge === 'left') {
-      x.value = closestEdge.distance // Maintain exact distance from left
-      y.value = verticalRatio * screenHeight
-    } else if (closestEdge.edge === 'right') {
-      x.value = screenWidth - menuWidth - closestEdge.distance // Maintain exact distance from right
-      y.value = verticalRatio * screenHeight
-    } else if (closestEdge.edge === 'top') {
-      x.value = horizontalRatio * screenWidth
-      y.value = closestEdge.distance // Maintain exact distance from top
-    } else {
-      // bottom
-      x.value = horizontalRatio * screenWidth
-      y.value = screenHeight - menuHeight - closestEdge.distance // Maintain exact distance from bottom
-    }
-
-    // Ensure the menu stays within the screen bounds
-    x.value = clamp(x.value, 0, screenWidth - menuWidth)
-    y.value = clamp(y.value, 0, screenHeight - menuHeight)
-  }
-}
-
-useEventListener(window, 'resize', adjustMenuPosition)
-
-// Drop zone state
-const isMouseOverDropZone = ref(false)
-
-// Mouse event handlers for self-contained drop zone
-const onMouseEnterDropZone = () => {
-  if (isDragging.value) {
-    isMouseOverDropZone.value = true
-  }
-}
-
-const onMouseLeaveDropZone = () => {
-  if (isDragging.value) {
-    isMouseOverDropZone.value = false
-  }
-}
-
-// Handle drag state changes
-watch(isDragging, (dragging) => {
-  if (dragging) {
-    // Starting to drag - undock if docked
-    if (isDocked.value) {
-      isDocked.value = false
-    }
-  } else {
-    // Stopped dragging - dock if mouse is over drop zone
-    if (isMouseOverDropZone.value) {
-      isDocked.value = true
-    }
-    // Reset drop zone state
-    isMouseOverDropZone.value = false
-  }
-})
-
-const cancelJobTooltipConfig = computed(() =>
-  buildTooltipConfig(t('menu.interrupt'))
-)
-
-const cancelCurrentJob = async () => {
-  if (isExecutionIdle.value) return
-  await commandStore.execute('Comfy.Interrupt')
-}
-
-const actionbarClass = computed(() =>
-  cn(
-    'w-[200px] border-dashed border-blue-500 opacity-80',
-    'm-1.5 flex items-center justify-center self-stretch',
-    'rounded-md before:w-50 before:-ml-50 before:h-full',
-    'pointer-events-auto',
-    isMouseOverDropZone.value &&
-      'border-[3px] opacity-100 scale-105 shadow-[0_0_20px] shadow-blue-500'
-  )
-)
 const panelClass = computed(() =>
   cn(
     'actionbar pointer-events-auto z-1300',
