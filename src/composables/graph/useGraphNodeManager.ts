@@ -144,7 +144,8 @@ export function safeWidgetMapper(
         nodeType: getNodeType(node, widget),
         options: widget.options,
         spec,
-        slotMetadata: slotInfo
+        slotMetadata: slotInfo,
+        controlWidget: getControlWidget(widget)
       }
     } catch (error) {
       return {

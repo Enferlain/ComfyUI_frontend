@@ -146,9 +146,6 @@ const outputItems = computed<DropdownItem[]>(() => {
 })
 
 const allItems = computed<DropdownItem[]>(() => {
-  if (props.isAssetMode && assetData) {
-    return assetData.dropdownItems.value
-  }
   return [...inputItems.value, ...outputItems.value]
 })
 
