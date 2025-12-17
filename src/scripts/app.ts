@@ -31,7 +31,6 @@ import {
   type NodeId,
   isSubgraphDefinition
 } from '@/platform/workflow/validation/schemas/workflowSchema'
-import { executeNumberControls } from '@/renderer/extensions/vueNodes/widgets/services/NumberControlRegistry'
 import type {
   ExecutionErrorWsMessage,
   NodeError,
