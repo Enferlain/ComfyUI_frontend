@@ -11,7 +11,10 @@ export default {
 
 function formatAndEslint(fileNames: string[]) {
   // Convert absolute paths to relative paths for better ESLint resolution
-  const relativePaths = fileNames.map((f) => path.relative(process.cwd(), f))
+  // Normalize to forward slashes for cross-platform compatibility (ESLint/prettier)
+  const relativePaths = fileNames.map((f) =>
+    path.relative(process.cwd(), f).replaceAll('\\', '/')
+  )
   const joinedPaths = relativePaths.map((p) => `"${p}"`).join(' ')
   return [
     `pnpm exec prettier --cache --write ${joinedPaths}`,
