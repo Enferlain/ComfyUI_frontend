@@ -281,6 +281,14 @@
     --node-component-border: var(--color-charcoal-400) !important;
     --node-icon-disabled: var(--color-charcoal-300) !important;
 
+    /* Node border - subtle charcoal by default (not purple!) */
+    --component-node-border: var(--color-charcoal-400) !important;
+    --color-component-node-border: var(--color-charcoal-400) !important;
+
+    /* Node outline - transparent by default, white when selected (handled by class overrides) */
+    --node-component-outline: transparent !important;
+    --color-node-component-outline: transparent !important;
+
     /* --- Dialogs --- */
     --p-dialog-border-color: var(--color-charcoal-300) !important;
     --p-dialog-header-background: var(--color-charcoal-800) !important;
@@ -381,6 +389,40 @@
     --p-slider-handle-hover-background: #E2E0EC !important;
     --p-slider-range-background: var(--p-primary-color) !important;
     --p-slider-track-background: var(--color-charcoal-400) !important;
+
+    /* --- Toast/Notifications --- */
+    /* Toast Container */
+    --p-toast-blur: 10px !important;
+    --p-toast-border-radius: 8px !important;
+    --p-toast-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+
+    /* Error Toast - Deep Purple with Red accent */
+    --p-toast-error-background: rgba(35, 32, 52, 0.95) !important;
+    --p-toast-error-border-color: rgba(255, 68, 68, 0.4) !important;
+    --p-toast-error-color: #E2E0EC !important;
+    --p-toast-error-detail-color: #948FB2 !important;
+    --p-toast-error-close-button-hover-background: rgba(255, 68, 68, 0.15) !important;
+
+    /* Warning Toast - Deep Purple with Gold accent */
+    --p-toast-warn-background: rgba(35, 32, 52, 0.95) !important;
+    --p-toast-warn-border-color: rgba(253, 171, 52, 0.4) !important;
+    --p-toast-warn-color: #E2E0EC !important;
+    --p-toast-warn-detail-color: #948FB2 !important;
+    --p-toast-warn-close-button-hover-background: rgba(253, 171, 52, 0.15) !important;
+
+    /* Success Toast - Deep Purple with Green accent */
+    --p-toast-success-background: rgba(35, 32, 52, 0.95) !important;
+    --p-toast-success-border-color: rgba(0, 205, 114, 0.4) !important;
+    --p-toast-success-color: #E2E0EC !important;
+    --p-toast-success-detail-color: #948FB2 !important;
+    --p-toast-success-close-button-hover-background: rgba(0, 205, 114, 0.15) !important;
+
+    /* Info Toast - Deep Purple with Violet accent */
+    --p-toast-info-background: rgba(35, 32, 52, 0.95) !important;
+    --p-toast-info-border-color: rgba(139, 92, 246, 0.4) !important;
+    --p-toast-info-color: #E2E0EC !important;
+    --p-toast-info-detail-color: #948FB2 !important;
+    --p-toast-info-close-button-hover-background: rgba(139, 92, 246, 0.15) !important;
 }
 
 
@@ -484,6 +526,169 @@
     background-color: #895cef !important;
     border-radius: 6px;
     border: 3px solid #232034 !important;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION OVERRIDES (PrimeVue)
+   ========================================================================== */
+
+/* Base Toast Message Styling */
+.p-toast-message {
+    backdrop-filter: blur(10px) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Error Toast */
+.p-toast-message-error {
+    background: rgba(35, 32, 52, 0.95) !important;
+    border-left: 4px solid rgba(255, 68, 68, 0.8) !important;
+    border-color: rgba(255, 68, 68, 0.4) !important;
+}
+
+.p-toast-message-error .p-toast-message-text,
+.p-toast-message-error .p-toast-summary,
+.p-toast-message-error .p-toast-message-content {
+    color: #E2E0EC !important;
+}
+
+.p-toast-message-error .p-toast-detail {
+    color: #948FB2 !important;
+}
+
+.p-toast-message-error .p-toast-icon-close:hover {
+    background: rgba(255, 68, 68, 0.15) !important;
+}
+
+/* Warning Toast */
+.p-toast-message-warn {
+    background: rgba(35, 32, 52, 0.95) !important;
+    border-left: 4px solid rgba(253, 171, 52, 0.8) !important;
+    border-color: rgba(253, 171, 52, 0.4) !important;
+}
+
+.p-toast-message-warn .p-toast-message-text,
+.p-toast-message-warn .p-toast-summary,
+.p-toast-message-warn .p-toast-message-content {
+    color: #E2E0EC !important;
+}
+
+.p-toast-message-warn .p-toast-detail {
+    color: #948FB2 !important;
+}
+
+.p-toast-message-warn .p-toast-icon-close:hover {
+    background: rgba(253, 171, 52, 0.15) !important;
+}
+
+/* Success Toast */
+.p-toast-message-success {
+    background: rgba(35, 32, 52, 0.95) !important;
+    border-left: 4px solid rgba(0, 205, 114, 0.8) !important;
+    border-color: rgba(0, 205, 114, 0.4) !important;
+}
+
+.p-toast-message-success .p-toast-message-text,
+.p-toast-message-success .p-toast-summary,
+.p-toast-message-success .p-toast-message-content {
+    color: #E2E0EC !important;
+}
+
+.p-toast-message-success .p-toast-detail {
+    color: #948FB2 !important;
+}
+
+.p-toast-message-success .p-toast-icon-close:hover {
+    background: rgba(0, 205, 114, 0.15) !important;
+}
+
+/* Info Toast */
+.p-toast-message-info {
+    background: rgba(35, 32, 52, 0.95) !important;
+    border-left: 4px solid rgba(139, 92, 246, 0.8) !important;
+    border-color: rgba(139, 92, 246, 0.4) !important;
+}
+
+.p-toast-message-info .p-toast-message-text,
+.p-toast-message-info .p-toast-summary,
+.p-toast-message-info .p-toast-message-content {
+    color: #E2E0EC !important;
+}
+
+.p-toast-message-info .p-toast-detail {
+    color: #948FB2 !important;
+}
+
+.p-toast-message-info .p-toast-icon-close:hover {
+    background: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Toast Icon Colors */
+.p-toast-message-error .p-toast-message-icon {
+    color: #ff4444 !important;
+}
+
+.p-toast-message-warn .p-toast-message-icon {
+    color: #fdab34 !important;
+}
+
+.p-toast-message-success .p-toast-message-icon {
+    color: #00cd72 !important;
+}
+
+.p-toast-message-info .p-toast-message-icon {
+    color: #8b5cf6 !important;
+}
+
+/* Toast Close Button */
+.p-toast-icon-close {
+    color: #948FB2 !important;
+}
+
+.p-toast-icon-close:hover {
+    color: #E2E0EC !important;
+}
+
+
+/* ==========================================================================
+   VUENODES SELECTION STYLING
+   Matches LiteGraph's floating outline effect
+   ========================================================================== */
+
+/* Remove default outline on all nodes - ensure clean state */
+.lg-node {
+    outline: none !important;
+}
+
+/* Selection effect - floating outline like LiteGraph */
+/* Uses Kuro purple accent with gap effect */
+.lg-node.outline-node-component-outline {
+    outline: 1.5px solid rgba(139, 92, 246, 0.9) !important;
+    outline-offset: 5px !important;
+}
+
+/* Error state - red floating outline */
+.lg-node.outline-node-stroke-error {
+    outline: 1px solid rgba(255, 68, 68, 0.8) !important;
+    outline-offset: 5px !important;
+}
+
+/* Executing state - blue floating outline */
+.lg-node.outline-node-stroke-executing {
+    outline: 1px solid rgba(11, 140, 233, 0.8) !important;
+    outline-offset: 5px !important;
+}
+
+/* Combined selected + error state */
+.lg-node.outline-node-component-outline.outline-node-stroke-error {
+    outline: 1px solid rgba(255, 68, 68, 0.9) !important;
+    outline-offset: 8px !important;
+}
+
+/* Combined selected + executing state */
+.lg-node.outline-node-component-outline.outline-node-stroke-executing {
+    outline: 1px solid rgba(11, 140, 233, 0.9) !important;
+    outline-offset: 8px !important;
 }
 
 
