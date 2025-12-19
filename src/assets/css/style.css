@@ -84,6 +84,28 @@
     --color-neutral-900: #181625 !important;
     --color-white: #E2E0EC !important;
 
+    /* ASH (Grays) -> MUTED PURPLES */
+    --color-ash-300: #C9C6D9 !important;
+    --color-ash-500: #948FB2 !important;
+    --color-ash-800: #4B476E !important;
+
+    /* GRAPHITE */
+    --color-graphite-400: #948FB2 !important;
+
+    /* GOLD (Warnings) */
+    --color-gold-400: #fcbf64 !important;
+    --color-gold-500: #fdab34 !important;
+    --color-gold-600: #fd9903 !important;
+
+    /* CORAL (Destructive) */
+    --color-coral-500: #f75951 !important;
+    --color-coral-600: #e04e48 !important;
+    --color-coral-700: #b33a3a !important;
+
+    /* STATUS */
+    --color-error: #ff4444 !important;
+    --color-bypass: #6a246a !important;
+
 
     /* ======================================================================
        3. PRIMEVUE SURFACE & TEXT VARIABLES
@@ -116,10 +138,14 @@
     --p-primary-active-color: var(--p-primary-200) !important;
     --p-primary-contrast-color: #ffffff !important;
 
-    /* Highlight/Selection */
+    /* Highlight/Selection - GLOBAL OVERRIDES (Nuke the Blue) */
     --p-highlight-background: rgba(139, 92, 246, 0.15) !important;
     --p-highlight-focus-background: rgba(139, 92, 246, 0.25) !important;
     --p-highlight-color: #a78bfa !important;
+    --p-focus-ring-color: #8b5cf6 !important;
+    --p-focus-ring-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25) !important;
+    --p-primary-color: #8b5cf6 !important;
+    --p-primary-500: #8b5cf6 !important;
 
 
     /* ======================================================================
@@ -130,7 +156,8 @@
     --secondary-foreground: #E2E0EC !important;
     --muted-foreground: #948FB2 !important;
 
-    --secondary-background: #2b2840 !important;
+    --secondary-background: #232034 !important;
+    /* Match menu bg */
     --secondary-background-hover: #3E3B5E !important;
     --secondary-background-selected: #4B476E !important;
 
@@ -148,7 +175,8 @@
     --color-base-foreground: #E2E0EC !important;
     --color-muted-foreground: #948FB2 !important;
     --color-secondary-foreground: #E2E0EC !important;
-    --color-secondary-background: #2b2840 !important;
+    --color-secondary-background: #232034 !important;
+    /* Match menu bg */
     --color-secondary-background-hover: #3E3B5E !important;
     --color-secondary-background-selected: #4B476E !important;
 
@@ -164,8 +192,9 @@
     --p-button-primary-hover-border-color: #a78bfa !important;
     --p-button-primary-active-background: #7c3aed !important;
 
-    --p-button-secondary-background: #2b2840 !important;
-    --p-button-secondary-border-color: #2b2840 !important;
+    --p-button-secondary-background: #232034 !important;
+    /* Match menu bg */
+    --p-button-secondary-border-color: transparent !important;
     --p-button-secondary-color: #E2E0EC !important;
     --p-button-secondary-hover-background: #3E3B5E !important;
     --p-button-secondary-hover-border-color: #3E3B5E !important;
@@ -229,9 +258,129 @@
        ====================================================================== */
 
     --interface-menu-surface: var(--color-charcoal-600) !important;
-    --interface-menu-stroke: var(--color-charcoal-400) !important;
+    --interface-menu-stroke: var(--color-slate-300) !important;
     --interface-panel-hover-surface: var(--color-charcoal-500) !important;
     --interface-panel-selected-surface: var(--color-charcoal-400) !important;
+
+    /* Button Fixes */
+    --button-surface: var(--color-charcoal-600) !important;
+    --button-hover-surface: var(--color-charcoal-400) !important;
+    /* #3E3B5E */
+    --button-active-surface: var(--color-charcoal-300) !important;
+    /* #4B476E - Lighter for active */
+    --button-icon: var(--color-slate-300) !important;
+
+    /* Interface Button Surfaces (for Tailwind bg-* utilities) */
+    --interface-button-hover-surface: var(--color-charcoal-400) !important;
+    --color-interface-button-hover-surface: var(--color-charcoal-400) !important;
+    --color-button-hover-surface: var(--color-charcoal-400) !important;
+    --color-button-active-surface: var(--color-charcoal-300) !important;
+
+    /* Node Component Fixes */
+    --node-component-header-icon: var(--color-slate-300) !important;
+    --node-component-border: var(--color-charcoal-400) !important;
+    --node-icon-disabled: var(--color-charcoal-300) !important;
+
+    /* --- Dialogs --- */
+    --p-dialog-border-color: var(--color-charcoal-300) !important;
+    --p-dialog-header-background: var(--color-charcoal-800) !important;
+    --p-dialog-content-background: var(--color-charcoal-800) !important;
+    --p-dialog-footer-background: var(--color-charcoal-800) !important;
+
+    /* --- Messages (Toast/Alerts) --- */
+    /* Info */
+    --p-message-info-background: rgba(139, 92, 246, 0.15) !important;
+    --p-message-info-color: #ffffff !important;
+    --p-message-info-border-color: transparent !important;
+    --p-message-info-shadow: none !important;
+
+    /* Success */
+    --p-message-success-background: rgba(0, 205, 114, 0.15) !important;
+    /* Jade tint */
+    --p-message-success-color: #ffffff !important;
+    --p-message-success-border-color: transparent !important;
+    --p-message-success-shadow: none !important;
+
+    /* Warn */
+    --p-message-warn-background: rgba(204, 170, 119, 0.15) !important;
+    /* Gold tint */
+    --p-message-warn-color: #ffffff !important;
+    --p-message-warn-border-color: transparent !important;
+    --p-message-warn-shadow: none !important;
+
+    /* Error */
+    --p-message-error-background: rgba(255, 68, 68, 0.15) !important;
+    /* Red tint */
+    --p-message-error-color: #ffffff !important;
+    --p-message-error-border-color: transparent !important;
+    --p-message-error-shadow: none !important;
+
+    /* --- Tags --- */
+    --p-tag-primary-background: var(--p-primary-400) !important;
+    --p-tag-primary-color: #ffffff !important;
+    --p-tag-padding: 0.25rem 0.5rem !important;
+    --p-tag-border-radius: 4px !important;
+    --p-tag-font-size: 0.75rem !important;
+
+    /* Tag Variants */
+    --p-tag-warn-background: rgba(214, 41, 214, 0.149) !important;
+    --p-tag-warn-color: #fdab34 !important;
+    /* Gold text for readability on dark */
+
+    --p-tag-success-background: rgba(0, 205, 114, 0.15) !important;
+    --p-tag-success-color: #00cd72 !important;
+    /* Jade text */
+
+    --p-tag-danger-background: rgba(255, 68, 68, 0.15) !important;
+    --p-tag-danger-color: #ff4444 !important;
+    /* Red text */
+
+    --p-tag-info-background: rgba(139, 92, 246, 0.15) !important;
+    --p-tag-info-color: #a58df7 !important;
+    /* Purple text */
+
+    --p-tag-secondary-background: var(--color-charcoal-500) !important;
+    --p-tag-secondary-color: var(--color-ash-500) !important;
+
+    /* --- Lists & Menus (Settings) --- */
+    --p-list-option-color: var(--p-text-color) !important;
+    --p-list-option-hover-background: var(--color-charcoal-500) !important;
+    --p-list-option-hover-color: #ffffff !important;
+    --p-list-option-focus-background: var(--color-charcoal-500) !important;
+    --p-content-hover-background: var(--color-charcoal-500) !important;
+
+    /* --- Listbox (Settings Sidebar) --- */
+    --p-listbox-background: transparent !important;
+    --p-listbox-border-color: transparent !important;
+    --p-listbox-option-color: var(--p-text-muted-color) !important;
+
+    /* Hover State */
+    --p-listbox-option-hover-background: var(--color-charcoal-500) !important;
+    --p-listbox-option-hover-color: #ffffff !important;
+
+    /* Selected/Active State */
+    --p-listbox-option-selected-background: rgba(139, 92, 246, 0.15) !important;
+    /* Transparent purple bg */
+    --p-listbox-option-selected-color: #a58df7 !important;
+    /* Requested purple text */
+    --p-listbox-option-focus-background: var(--color-charcoal-500) !important;
+
+    --p-listbox-option-group-label-color: var(--color-charcoal-200) !important;
+    --p-listbox-option-group-background: transparent !important;
+
+    /* --- ToggleSwitch --- */
+    --p-toggleswitch-background: var(--color-charcoal-400) !important;
+    --p-toggleswitch-hover-background: var(--color-charcoal-300) !important;
+    --p-toggleswitch-checked-background: var(--p-primary-color) !important;
+    --p-toggleswitch-hover-checked-background: var(--p-primary-300) !important;
+    --p-toggleswitch-handle-background: #ffffff !important;
+    --p-toggleswitch-handle-color: #ffffff !important;
+
+    /* --- Slider --- */
+    --p-slider-handle-background: #ffffff !important;
+    --p-slider-handle-hover-background: #E2E0EC !important;
+    --p-slider-range-background: var(--p-primary-color) !important;
+    --p-slider-track-background: var(--color-charcoal-400) !important;
 }
 
 
@@ -300,6 +449,29 @@
 .p-terminal .xterm-viewport::-webkit-scrollbar {
     width: 12px;
     background-color: #181625 !important;
+}
+
+/* Force Listbox Hover Text Color (Specificity Fix) */
+.p-listbox-option:not(.p-highlight):hover,
+.p-listbox-option:not(.p-highlight).p-focus {
+    color: #ffffff !important;
+    background-color: var(--color-charcoal-500) !important;
+}
+
+/* Active/Selected State (High Specificity) */
+.p-listbox .p-listbox-list .p-listbox-option.p-listbox-option-selected,
+.p-listbox .p-listbox-list .p-listbox-option.p-highlight,
+.p-listbox .p-listbox-list .p-listbox-option.p-listbox-option-selected.p-focus,
+.p-listbox .p-listbox-list .p-listbox-option.p-highlight.p-focus {
+    color: #a58df7 !important;
+    background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Hovering over the Active Item (High Specificity) */
+.p-listbox .p-listbox-list .p-listbox-option.p-listbox-option-selected:hover,
+.p-listbox .p-listbox-list .p-listbox-option.p-highlight:hover {
+    color: #a58df7 !important;
+    background-color: rgba(139, 92, 246, 0.25) !important;
 }
 
 .p-terminal .xterm-viewport::-webkit-scrollbar-track {
