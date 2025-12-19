@@ -1,7 +1,6 @@
 <template>
   <div
     v-if="visible && initialized"
-    ref="minimapRef"
     class="minimap-main-container absolute right-0 bottom-[54px] z-1000 flex"
   >
     <MiniMapPanel
@@ -16,11 +15,12 @@
     />
 
     <div
+      ref="containerRef"
       class="litegraph-minimap relative border border-interface-stroke bg-comfy-menu-bg shadow-interface"
       :style="containerStyles"
     >
       <Button
-        class="absolute top-1 left-1 z-10 hover:bg-interface-button-hover-surface!"
+        class="absolute top-1 left-1 z-10 hover:bg-interface-button-hover-surface! w-7 h-7 !p-0 flex items-center justify-center"
         size="small"
         text
         severity="secondary"
@@ -31,7 +31,7 @@
         </template>
       </Button>
       <Button
-        class="absolute top-1 right-1 z-10 hover:bg-interface-button-hover-surface!"
+        class="absolute top-1 right-1 z-10 hover:bg-interface-button-hover-surface! w-7 h-7 !p-0 flex items-center justify-center"
         size="small"
         text
         severity="secondary"
@@ -50,7 +50,12 @@
         }"
       />
 
-      <canvas :width="width" :height="height" class="minimap-canvas" />
+      <canvas
+        ref="canvasRef"
+        :width="width"
+        :height="height"
+        class="minimap-canvas"
+      />
 
       <div class="minimap-viewport" :style="viewportStyles" />
 
@@ -69,7 +74,7 @@
 
 <script setup lang="ts">
 import Button from 'primevue/button'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 
 import { useMinimap } from '@/renderer/extensions/minimap/composables/useMinimap'
 import { useCommandStore } from '@/stores/commandStore'
@@ -78,9 +83,9 @@ import MiniMapPanel from './MiniMapPanel.vue'
 
 const commandStore = useCommandStore()
 
-const minimapRef = ref<HTMLDivElement>()
-
 const {
+  containerRef,
+  canvasRef,
   initialized,
   visible,
   containerStyles,
@@ -99,21 +104,17 @@ const {
   handlePointerMove,
   handlePointerUp,
   handlePointerCancel,
-  handleWheel,
-  setMinimapRef
+  handleWheel
 } = useMinimap()
+
+void containerRef
+void canvasRef
 
 const showOptionsPanel = ref(false)
 
 const toggleOptionsPanel = () => {
   showOptionsPanel.value = !showOptionsPanel.value
 }
-
-onMounted(() => {
-  if (minimapRef.value) {
-    setMinimapRef(minimapRef.value)
-  }
-})
 
 onUnmounted(() => {
   destroy()

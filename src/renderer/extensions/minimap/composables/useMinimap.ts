@@ -20,7 +20,6 @@ export function useMinimap() {
 
   const containerRef = ref<HTMLDivElement>()
   const canvasRef = ref<HTMLCanvasElement>()
-  const minimapRef = ref<HTMLElement | null>(null)
 
   const visible = ref(true)
   const initialized = ref(false)
@@ -199,10 +198,6 @@ export function useMinimap() {
     await settingStore.set('Comfy.Minimap.Visible', visible.value)
   }
 
-  const setMinimapRef = (ref: HTMLElement | null) => {
-    minimapRef.value = ref
-  }
-
   // Dynamic viewport styles based on actual viewport transform
   const viewportStyles = computed(() => {
     const transform = viewport.viewportTransform.value
@@ -246,7 +241,6 @@ export function useMinimap() {
     handlePointerUp: interaction.handlePointerUp,
     handlePointerCancel: interaction.handlePointerCancel,
     handleWheel: interaction.handleWheel,
-    setMinimapRef,
     updateOption
   }
 }
