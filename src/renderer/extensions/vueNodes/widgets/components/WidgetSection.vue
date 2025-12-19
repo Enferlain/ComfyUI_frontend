@@ -1,13 +1,13 @@
 <template>
   <div
-    class="flex items-center gap-2 px-3 py-1 cursor-pointer bg-slate-800 hover:bg-slate-700 select-none border-b border-t border-slate-600 mt-2 mb-1"
+    class="flex items-center gap-2 px-3 py-1 cursor-pointer bg-[var(--color-charcoal-400)] hover:bg-[var(--color-charcoal-300)] select-none border-b border-t border-[var(--color-charcoal-300)] mt-2 mb-1 rounded-sm transition-colors duration-150"
     @click="toggleCollapse"
   >
     <i
-      class="pi pi-chevron-down text-xs transition-transform duration-200"
+      class="pi pi-chevron-down text-xs transition-transform duration-200 text-[var(--p-text-muted-color)]"
       :class="{ '-rotate-90': collapsed }"
     />
-    <span class="font-bold text-xs text-slate-200 flex-grow pt-0.5">
+    <span class="font-bold text-xs text-[var(--p-text-color)] flex-grow pt-0.5">
       {{ widget.label || widget.name }}
     </span>
   </div>

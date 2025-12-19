@@ -25,6 +25,8 @@
         overlay: 'w-fit min-w-full'
       }"
       data-capture-wheel="true"
+      @show="handleDropdownShow"
+      @hide="handleDropdownHide"
     />
     <div
       v-if="$slots.default || widget.options?.auto_create"
@@ -50,7 +52,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Select from 'primevue/select'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { useTransformCompatOverlayProps } from '@/composables/useTransformCompatOverlayProps'
 import { assetService } from '@/platform/assets/services/assetService'
@@ -112,16 +114,39 @@ const selectOptions = computed(() => {
 
   return []
 })
+
+// Track if dropdown is open and whether filtering should be active
+const isDropdownOpen = ref(false)
+const filterActive = ref(false)
+
+// When typing occurs, activate filtering
+watch(modelValue, (newVal, oldVal) => {
+  // Only activate filter if the value actually changed (user is typing)
+  if (newVal !== oldVal && isDropdownOpen.value) {
+    filterActive.value = true
+  }
+})
+
+function handleDropdownShow() {
+  isDropdownOpen.value = true
+  // When opening fresh (via click), don't filter
+  filterActive.value = false
+}
+
+function handleDropdownHide() {
+  isDropdownOpen.value = false
+  filterActive.value = false
+}
+
 const filteredOptions = computed(() => {
   const options = selectOptions.value
   if (!props.widget.options?.editable) return options
 
+  // If filter is not active (dropdown opened via click), show all
+  if (!filterActive.value) return options
+
   const searchValue = (modelValue.value || '').toLowerCase()
   if (!searchValue) return options
-
-  // If the current value is exactly one of the options, show all choices
-  // This allows seeing other options when expanding the dropdown after a selection
-  if (options.includes(modelValue.value)) return options
 
   return options.filter((option) =>
     String(option).toLowerCase().includes(searchValue)
