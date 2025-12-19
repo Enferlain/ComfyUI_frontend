@@ -237,10 +237,10 @@ export const useLitegraphService = () => {
 
       // Inject dependency on section visibility
       let widgetInputSpec = inputSpec
-      if (currentSection) {
+      if (inputSpec.section) {
         widgetInputSpec = {
           ...inputSpec,
-          if: { ...inputSpec.if, [currentSection]: false }
+          if: { ...inputSpec.if, [inputSpec.section]: false }
         }
       }
 

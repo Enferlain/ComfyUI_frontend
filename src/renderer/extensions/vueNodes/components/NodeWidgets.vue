@@ -177,7 +177,28 @@ const processedWidgets = computed((): ProcessedWidget[] => {
     // @ts-ignore
     const sectionName = widgetOptions?.section
     const isHiddenBySection = sectionName && collapsedSections.has(sectionName)
-    const finalHidden = widgetOptions?.hidden || isHiddenBySection
+
+    // Handle Conditional Visibility (if property)
+    // @ts-ignore
+    const condition = widgetOptions?.if
+    let isHiddenByCondition = false
+    if (condition) {
+      for (const [dependencyName, expectedValue] of Object.entries(condition)) {
+        // Find dependency widget in the raw widgets list
+        const dependencyWidget = widgets.find((w) => w.name === dependencyName)
+        if (dependencyWidget) {
+          // Loose matching to handle "10" vs 10
+          // eslint-disable-next-line eqeqeq
+          if (dependencyWidget.value != expectedValue) {
+            isHiddenByCondition = true
+            break
+          }
+        }
+      }
+    }
+
+    const finalHidden =
+      widgetOptions?.hidden || isHiddenBySection || isHiddenByCondition
 
     const simplified: SimplifiedWidget = {
       name: widget.name,
