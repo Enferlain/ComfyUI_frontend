@@ -10,12 +10,12 @@
     <InputNumber
       v-model="batchCount"
       class="w-16"
-      :input-class="'text-center px-1'"
+      input-class="text-center px-1"
       :min="minQueueCount"
       :max="maxQueueCount"
       fluid
       show-buttons
-      buttonLayout="stacked"
+      button-layout="stacked"
       :pt="{
         incrementButton: {
           class: 'w-6',
