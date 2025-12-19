@@ -7,7 +7,7 @@
       :class="panelClass"
       :pt="{
         header: { class: 'hidden' },
-        content: { class: isDocked ? 'p-0' : 'p-1' }
+        content: { class: isDocked ? 'p-0' : 'p-1 pr-2' }
       }"
     >
       <div ref="panelRef" class="flex items-center select-none gap-2">

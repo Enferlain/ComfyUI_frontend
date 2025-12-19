@@ -166,5 +166,6 @@ const queuePrompt = async (e: Event) => {
 .comfyui-queue-button :deep(.p-splitbutton-dropdown) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  width: 2.5rem;
 }
 </style>

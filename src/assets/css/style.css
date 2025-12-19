@@ -3,175 +3,322 @@
 /* ==========================================================================
    LUMI'S KURO THEME OVERRIDES
    "Banish the Boring Gray!"
+   
+   TABLE OF CONTENTS:
+   1. Color Palette Reference
+   2. Base Palette Overrides (Charcoal, Azure, Slate, Smoke)
+   3. PrimeVue Surface & Text Variables
+   4. Semantic Foreground/Background Tokens
+   5. Tailwind Color Token Bridge
+   6. PrimeVue Component Variables
+   7. Interface & Menu Variables
+   8. Class-Based Overrides (Fallbacks)
+   9. Terminal Fixes
+   10. Loading Animation
    ========================================================================== */
 
-:root, .dark-theme {
 
-    /* --- 1. THE PRIMARY ACCENT (The "Run" Button) --- */
-    /* We use NEON CYAN (#06b6d4) to contrast with the Purple UI */
-    
-    /* Base Primary Colors (Used globally) */
-    --p-primary-400: #8b5cf6 !important; /* Violet Base */
-    --p-primary-300: #a78bfa !important; /* Violet Lighter (Hover) */
-    --p-primary-200: #c4b5fd !important; /* Violet Lightest (Active) */
-    
-    /* Map to PrimeVue Generics */
-    --p-primary-color: var(--p-primary-400) !important;
-    --p-primary-hover-color: var(--p-primary-300) !important;
-    --p-primary-active-color: var(--p-primary-200) !important;
-    
-    /* Text Color: White looks best on Violet */
-    --p-primary-contrast-color: #ffffff !important; 
-
-    /* Highlights (Selection glow) - Violet with transparency */
-    /* RGB of #8b5cf6 is 139, 92, 246 */
-    --p-highlight-background: rgba(139, 92, 246, 0.15) !important;
-    --p-highlight-focus-background: rgba(139, 92, 246, 0.25) !important;
-    --p-highlight-color: #a78bfa !important;
-
-    /* --- SPECIFIC BUTTON OVERRIDES (Your Custom Style) --- */
-    /* Using the dark menu background for the border makes it look clean! */
-    --p-button-primary-background: #8b5cf6 !important;
-    --p-button-primary-border-color: #232034 !important; 
-    
-    --p-button-primary-hover-background: #a78bfa !important;
-    --p-button-primary-hover-border-color: #a78bfa !important; /* Border lights up on hover */
-    
-    --p-button-primary-active-background: #7c3aed !important; /* Darker purple on click */
-
-    /* --- 2. THE KURO SURFACES (Mapping the Grayscale to Purple) --- */
-    
-    /* SURFACE 900-950: The Deepest Backgrounds (Canvas/Inputs) */
-    --p-surface-950: #181625 !important;
-    --p-surface-900: #181625 !important; 
-    
-    /* SURFACE 800: The Panels/Menus/Popups */
-    --p-surface-800: #232034 !important;
-    
-    /* SURFACE 700-600: Borders & Dividers */
-    --p-surface-700: #3E3B5E !important;
-    --p-surface-600: #4B476E !important;
-    
-    /* SURFACE 500-400: Muted Text/Icons */
-    --p-surface-500: #5B5680 !important;
-    --p-surface-400: #948FB2 !important;
-    
-    /* SURFACE 0-100: Primary Text (Light) */
-    --p-surface-0: #E2E0EC !important;  /* Main Text */
-    --p-surface-50: #E2E0EC !important;
-    --p-surface-100: #E2E0EC !important;
+/* ==========================================================================
+   1. COLOR PALETTE REFERENCE (Kuro Purple Scale)
+   ========================================================================== 
+   
+   #181625 - Deepest (Main Background)
+   #1b1929 - Secondary Background
+   #232034 - Panels / Menus
+   #2b2840 - Hover States / Secondary Button BG
+   #3E3B5E - Borders / Separators
+   #4B476E - Lighter Borders
+   #5B5680 - Muted Elements
+   #6D6890 - Lightest Element
+   #948FB2 - Muted Text
+   #E2E0EC - Primary Text (Off-White Lavender)
+   
+   Primary Accent (Violet):
+   #8b5cf6 - Base
+   #a78bfa - Lighter (Hover)
+   #c4b5fd - Lightest (Active)
+   #7c3aed - Darker (Active/Click)
+   ========================================================================== */
 
 
-    /* --- 3. CHARCOAL PALETTE SWAP (For non-PrimeVue elements) --- */
+:root,
+.dark-theme {
+
+    /* ======================================================================
+       2. BASE PALETTE OVERRIDES (The "Head of the River")
+       Overriding these propagates to all downstream tokens automatically
+       ====================================================================== */
+
+    /* CHARCOAL (Dark Grays) -> DEEP PURPLES */
     --color-charcoal-800: #181625 !important;
     --color-charcoal-700: #1b1929 !important;
     --color-charcoal-600: #232034 !important;
     --color-charcoal-500: #2b2840 !important;
     --color-charcoal-400: #3E3B5E !important;
+    --color-charcoal-300: #4B476E !important;
     --color-charcoal-200: #5B5680 !important;
+    --color-charcoal-100: #6D6890 !important;
+
+    /* AZURE (Brand Blue) -> VIOLET */
+    --color-azure-600: #8b5cf6 !important;
+    --color-azure-400: #a78bfa !important;
+    --color-azure-300: #c4b5fd !important;
+
+    /* SLATE (Cool Grays) -> MUTED PURPLES */
+    --color-slate-100: #E2E0EC !important;
+    --color-slate-200: #C9C6D9 !important;
+    --color-slate-300: #948FB2 !important;
+
+    /* SMOKE (Light Grays) -> LAVENDER GRAYS */
+    --color-smoke-800: #2b2840 !important;
+    --color-smoke-700: #3E3B5E !important;
+    --color-smoke-600: #4B476E !important;
+    --color-smoke-500: #5B5680 !important;
+    --color-smoke-400: #948FB2 !important;
+    --color-smoke-300: #B0ACC4 !important;
+    --color-smoke-200: #C9C6D9 !important;
+    --color-smoke-100: #E2E0EC !important;
+
+    /* NEUTRALS */
     --color-black: #181625 !important;
     --color-neutral-900: #181625 !important;
+    --color-white: #E2E0EC !important;
 
 
-    /* --- 4. DEEP COMPONENT INTEGRATION (From your list!) --- */
-    
-    /* Form Fields (Inputs) */
+    /* ======================================================================
+       3. PRIMEVUE SURFACE & TEXT VARIABLES
+       ====================================================================== */
+
+    /* Surface Scale (Dark to Light) */
+    --p-surface-950: #181625 !important;
+    --p-surface-900: #181625 !important;
+    --p-surface-800: #232034 !important;
+    --p-surface-700: #3E3B5E !important;
+    --p-surface-600: #4B476E !important;
+    --p-surface-500: #5B5680 !important;
+    --p-surface-400: #948FB2 !important;
+
+    /* Surface 0-100 (Used as backgrounds in some components) */
+    --p-surface-0: #232034 !important;
+    --p-surface-50: #1b1929 !important;
+    --p-surface-100: #232034 !important;
+
+    /* Text Colors */
+    --p-text-color: #E2E0EC !important;
+    --p-text-muted-color: #948FB2 !important;
+
+    /* Primary Accent Colors */
+    --p-primary-400: #8b5cf6 !important;
+    --p-primary-300: #a78bfa !important;
+    --p-primary-200: #c4b5fd !important;
+    --p-primary-color: var(--p-primary-400) !important;
+    --p-primary-hover-color: var(--p-primary-300) !important;
+    --p-primary-active-color: var(--p-primary-200) !important;
+    --p-primary-contrast-color: #ffffff !important;
+
+    /* Highlight/Selection */
+    --p-highlight-background: rgba(139, 92, 246, 0.15) !important;
+    --p-highlight-focus-background: rgba(139, 92, 246, 0.25) !important;
+    --p-highlight-color: #a78bfa !important;
+
+
+    /* ======================================================================
+       4. SEMANTIC FOREGROUND/BACKGROUND TOKENS
+       ====================================================================== */
+
+    --base-foreground: #E2E0EC !important;
+    --secondary-foreground: #E2E0EC !important;
+    --muted-foreground: #948FB2 !important;
+
+    --secondary-background: #2b2840 !important;
+    --secondary-background-hover: #3E3B5E !important;
+    --secondary-background-selected: #4B476E !important;
+
+    /* Legacy tokens */
+    --fg-color: #E2E0EC !important;
+    --bg-color: #181625 !important;
+    --comfy-menu-bg: #232034 !important;
+
+
+    /* ======================================================================
+       5. TAILWIND COLOR TOKEN BRIDGE
+       Maps --color-* variables for Tailwind utility classes
+       ====================================================================== */
+
+    --color-base-foreground: #E2E0EC !important;
+    --color-muted-foreground: #948FB2 !important;
+    --color-secondary-foreground: #E2E0EC !important;
+    --color-secondary-background: #2b2840 !important;
+    --color-secondary-background-hover: #3E3B5E !important;
+    --color-secondary-background-selected: #4B476E !important;
+
+
+    /* ======================================================================
+       6. PRIMEVUE COMPONENT VARIABLES
+       ====================================================================== */
+
+    /* --- Buttons --- */
+    --p-button-primary-background: #8b5cf6 !important;
+    --p-button-primary-border-color: #232034 !important;
+    --p-button-primary-hover-background: #a78bfa !important;
+    --p-button-primary-hover-border-color: #a78bfa !important;
+    --p-button-primary-active-background: #7c3aed !important;
+
+    --p-button-secondary-background: #2b2840 !important;
+    --p-button-secondary-border-color: #2b2840 !important;
+    --p-button-secondary-color: #E2E0EC !important;
+    --p-button-secondary-hover-background: #3E3B5E !important;
+    --p-button-secondary-hover-border-color: #3E3B5E !important;
+    --p-button-secondary-hover-color: #FFFFFF !important;
+    --p-button-secondary-active-background: #4B476E !important;
+    --p-button-secondary-active-border-color: #4B476E !important;
+
+    /* --- Form Fields --- */
     --p-form-field-background: #181625 !important;
     --p-form-field-color: #E2E0EC !important;
     --p-form-field-border-color: #3E3B5E !important;
     --p-form-field-focus-border-color: var(--p-primary-color) !important;
-    
-    /* Content Panels */
-    --p-content-background: #232034 !important; /* Menu BG */
+
+    /* --- Content Panels --- */
+    --p-content-background: #232034 !important;
     --p-content-border-color: #3E3B5E !important;
     --p-content-color: #E2E0EC !important;
-    
-    /* Overlays/Popovers (Dropdowns) */
+
+    /* --- Overlays/Popovers --- */
     --p-overlay-select-background: #232034 !important;
     --p-overlay-popover-background: #232034 !important;
     --p-overlay-modal-background: #232034 !important;
-    
-    /* List Options (The items inside the dropdown) */
+
+    /* --- List Options --- */
     --p-list-option-color: #E2E0EC !important;
-    --p-list-option-focus-background: #2b2840 !important; /* Hover state */
+    --p-list-option-focus-background: #2b2840 !important;
     --p-list-option-selected-background: var(--p-highlight-background) !important;
     --p-list-option-selected-color: var(--p-highlight-color) !important;
-    
-    /* Navigation */
+
+    /* --- Navigation --- */
     --p-navigation-item-color: #E2E0EC !important;
     --p-navigation-item-active-background: #2b2840 !important;
 
-    /* Tooltips */
+    /* --- Tooltips --- */
     --p-tooltip-background: #3E3B5E !important;
     --p-tooltip-text-color: #E2E0EC !important;
     --p-tooltip-arrow-background: #3E3B5E !important;
 
-    /* NEW! Mapping for the official menu variables */
-    --interface-menu-surface: var(--color-charcoal-600) !important; /* Our Menu BG */
-    --interface-menu-stroke: var(--color-charcoal-400) !important;  /* Our Border Purple */
+    /* --- Toggle Switch --- */
+    --p-toggleswitch-background: var(--color-charcoal-400) !important;
+    --p-toggleswitch-hover-background: var(--color-charcoal-200) !important;
+    /* Unchecked Hover */
+    --p-toggleswitch-background-checked: var(--p-primary-color) !important;
+    --p-toggleswitch-hover-background-checked: var(--p-primary-300) !important;
+    /* Checked Hover */
+
+    --p-toggleswitch-handle-background: #948FB2 !important;
+    /* Muted Purple (Default) */
+    --p-toggleswitch-handle-hover-background: #E2E0EC !important;
+    /* Brighten on hover */
+    --p-toggleswitch-handle-background-checked: #ffffff !important;
+    --p-toggleswitch-handle-hover-background-checked: #ffffff !important;
+
+    --p-toggleswitch-handle-color: #E2E0EC !important;
+    --p-toggleswitch-border-color: var(--color-charcoal-300) !important;
+    --p-toggleswitch-border-color-checked: var(--p-primary-color) !important;
+
+
+    /* ======================================================================
+       7. INTERFACE & MENU VARIABLES
+       ====================================================================== */
+
+    --interface-menu-surface: var(--color-charcoal-600) !important;
+    --interface-menu-stroke: var(--color-charcoal-400) !important;
+    --interface-panel-hover-surface: var(--color-charcoal-500) !important;
+    --interface-panel-selected-surface: var(--color-charcoal-400) !important;
 }
 
+
 /* ==========================================================================
-   TERMINAL COLOR FIX (The "Paint Everything" Edition)
+   8. CLASS-BASED OVERRIDES (Fallbacks for missing variable bindings)
    ========================================================================== */
 
-/* 1. LAYER 1: The Outermost Shell */
+/* Tailwind utility class fixes */
+.text-secondary-foreground {
+    color: var(--color-secondary-foreground) !important;
+}
+
+.text-muted-foreground {
+    color: var(--color-muted-foreground) !important;
+}
+
+/* Icon color inheritance */
+.text-secondary-foreground .icon,
+.text-secondary-foreground [class*="icon-"] {
+    background-color: var(--color-secondary-foreground) !important;
+}
+
+/* Tooltip text */
+.p-tooltip-text {
+    color: var(--p-tooltip-text-color) !important;
+}
+
+/* Tag (BETA label) */
+.p-tag.p-tag-info {
+    background-color: var(--p-primary-400) !important;
+    color: #ffffff !important;
+}
+
+/* Force component text colors */
+.p-component,
+.p-component span,
+.comfy-menu span {
+    color: var(--p-text-color);
+}
+
+/* Muted text classes */
+.p-text-secondary,
+.text-muted,
+.text-muted-foreground {
+    color: var(--p-text-muted-color) !important;
+}
+
+
+/* ==========================================================================
+   9. TERMINAL COLOR FIX
+   ========================================================================== */
+
 .p-terminal {
     background-color: #181625 !important;
 }
 
-/* 2. LAYER 2: The Inner Screen wrapper */
 .p-terminal .xterm-screen {
     background-color: #181625 !important;
 }
 
-/* 3. LAYER 3: The Viewport (The thing that actually scrolls) */
-/* This is the culprit! If this is black, the scrollbar track looks black. */
-/* Confirmed inner left scroll bar section */
 .p-terminal .xterm-viewport {
     background-color: #181625 !important;
 }
 
-/* 4. THE SCROLLBAR ITSELF */
-/* Now that the background is purple, we style the bar on top of it */
-
-/* Width of the bar */
+/* Terminal Scrollbar */
 .p-terminal .xterm-viewport::-webkit-scrollbar {
     width: 12px;
-    background-color: #181625 !important; /* Match the layers below */
+    background-color: #181625 !important;
 }
 
-/* The Track (The lane) - Make it transparent so the purple layers show through */
 .p-terminal .xterm-viewport::-webkit-scrollbar-track {
-    background-color: #232034 !important; 
+    background-color: #232034 !important;
     border: 3px !important;
     margin: 0 !important;
 }
 
-/* The Thumb (The Handle) */
 .p-terminal .xterm-viewport::-webkit-scrollbar-thumb {
-    background-color: #895cef !important; /* Kuro Border Color */
+    background-color: #895cef !important;
     border-radius: 6px;
-    border: 3px solid #232034 !important; /* Creates a "floating" effect */
+    border: 3px solid #232034 !important;
 }
 
-/* The Corner */
-/* Can't see any effect for this */
-/*.p-terminal .xterm-viewport::-webkit-scrollbar-corner {
-/*    background-color: #181625 !important;
-/*}
 
-/* --- OPTIONAL: Force Component Text --- */
-/* If text is STILL invisible in specific spots, this forces all PrimeVue components to use light text */
-.p-component, .p-component span, .comfy-menu span {
-    color: #E2E0EC; 
-}
-/* Revert the color for things that explicitly want to be muted */
-.p-text-secondary, .text-muted {
-    color: #948FB2 !important;
-}
+/* ==========================================================================
+   10. LOADING ANIMATION
+   ========================================================================== */
 
-/* --- LOADING ANIMATION --- */
 .kuro-loader-overlay {
     position: fixed;
     top: 0;
@@ -190,21 +337,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* No gap needed anymore since there's no text */
-    
-    /* THE FLOAT ANIMATION */
-    /* Moves up and down smoothly over 3 seconds */
     animation: float 3s ease-in-out infinite;
 }
 
-/* Define the floating motion */
 @keyframes float {
     0% {
         transform: translateY(0px);
     }
+
     50% {
-        transform: translateY(-15px); /* Moves up 15 pixels */
+        transform: translateY(-15px);
     }
+
     100% {
         transform: translateY(0px);
     }
@@ -219,8 +363,14 @@
     animation: fade-text 2s infinite ease-in-out;
 }
 
-
 @keyframes fade-text {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
