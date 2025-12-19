@@ -148,6 +148,16 @@ const processedWidgets = computed((): ProcessedWidget[] => {
   const { widgets } = nodeData
   const result: ProcessedWidget[] = []
 
+  // Determine collapsed sections
+  const collapsedSections = new Set<string>()
+  for (const widget of widgets) {
+    if (widget.type === 'SECTION' || widget.type === 'section') {
+      if (widget.value === true) {
+        collapsedSections.add(widget.name)
+      }
+    }
+  }
+
   for (const widget of widgets) {
     if (!shouldRenderAsVue(widget)) continue
 
@@ -158,11 +168,16 @@ const processedWidgets = computed((): ProcessedWidget[] => {
     const { slotMetadata, options } = widget
 
     // Core feature: Disable Vue widgets when their input slots are connected
-    // This prevents conflicting input sources - when a slot is linked to another
-    // node's output, the widget should be read-only to avoid data conflicts
     const widgetOptions = slotMetadata?.linked
       ? { ...options, disabled: true }
       : options
+
+    // Handle section collapsing
+    // Using loose type check since 'section' property is custom
+    // @ts-ignore
+    const sectionName = widgetOptions?.section
+    const isHiddenBySection = sectionName && collapsedSections.has(sectionName)
+    const finalHidden = widgetOptions?.hidden || isHiddenBySection
 
     const simplified: SimplifiedWidget = {
       name: widget.name,
@@ -173,7 +188,7 @@ const processedWidgets = computed((): ProcessedWidget[] => {
       controlWidget: widget.controlWidget,
       label: widget.label,
       nodeType: widget.nodeType,
-      options: widgetOptions,
+      options: { ...widgetOptions, hidden: finalHidden },
       spec: widget.spec
     }
 

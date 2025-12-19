@@ -445,6 +445,25 @@ function createAssetService() {
     return await res.json()
   }
 
+  /**
+   * Creates a new folder
+   */
+  async function createFolder(path: string): Promise<void> {
+    const res = await api.fetchApi(`${ASSETS_ENDPOINT}/folders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ path })
+    })
+
+    if (!res.ok) {
+      throw new Error(
+        `Unable to create folder ${path}: Server returned ${res.status}`
+      )
+    }
+  }
+
   return {
     getAssetModelFolders,
     getAssetModels,
@@ -456,7 +475,8 @@ function createAssetService() {
     updateAsset,
     getAssetMetadata,
     uploadAssetFromUrl,
-    uploadAssetFromBase64
+    uploadAssetFromBase64,
+    createFolder
   }
 }
 

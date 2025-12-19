@@ -32,7 +32,11 @@ export const zBaseInputOptions = z
     widgetType: z.string().optional(),
     /** Backend-only properties. */
     rawLink: z.boolean().optional(),
-    lazy: z.boolean().optional()
+    lazy: z.boolean().optional(),
+    /** Group identifier for the input. Inputs with the same section will be grouped together. */
+    section: z.string().optional(),
+    /** Conditional visibility: { input_name: expected_value } */
+    if: z.record(z.any()).optional()
   })
   .passthrough()
 
@@ -84,7 +88,9 @@ export const zComboInputOptions = zBaseInputOptions.extend({
   options: z.array(zComboOption).optional(),
   remote: zRemoteWidgetConfig.optional(),
   /** Whether the widget is a multi-select widget. */
-  multi_select: zMultiSelectOption.optional()
+  multi_select: zMultiSelectOption.optional(),
+  editable: z.boolean().optional(),
+  auto_create: z.boolean().optional()
 })
 
 const zIntInputSpec = z.tuple([z.literal('INT'), zIntInputOptions.optional()])

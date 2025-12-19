@@ -122,9 +122,12 @@ export const useStringWidget = () => {
     const widget = multiline
       ? addMultilineWidget(node, inputSpec.name, {
           defaultVal,
-          placeholder: inputSpec.placeholder
+          placeholder: inputSpec.placeholder,
+          section: inputSpec.section
         })
-      : node.addWidget('text', inputSpec.name, defaultVal, () => {}, {})
+      : node.addWidget('text', inputSpec.name, defaultVal, () => {}, {
+          section: inputSpec.section
+        })
 
     if (typeof inputSpec.dynamicPrompts === 'boolean') {
       widget.dynamicPrompts = inputSpec.dynamicPrompts

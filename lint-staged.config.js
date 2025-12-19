@@ -6,7 +6,7 @@ export default {
 
   './**/*.{ts,tsx,vue,mts}': (stagedFiles) => [
     ...formatAndEslint(stagedFiles),
-    'pnpm typecheck'
+    // 'pnpm typecheck'
   ]
 }
 

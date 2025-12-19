@@ -243,7 +243,10 @@ const addComboWidget = (
     defaultValue,
     () => {},
     {
-      values: inputSpec.options ?? []
+      values: inputSpec.options ?? [],
+      editable: inputSpec.editable,
+      auto_create: inputSpec.auto_create,
+      section: inputSpec.section
     }
   )
 
@@ -283,6 +286,34 @@ const addComboWidget = (
       undefined,
       transformInputSpecV2ToV1(inputSpec)
     )
+  }
+
+  // Handle auto-create
+  if (inputSpec.auto_create) {
+    const originalCallback = widget.callback
+    widget.callback = (value: string, ...args: any[]) => {
+      originalCallback?.(value, ...args)
+
+      const options = widget.options.values || []
+      const exists = Array.isArray(options)
+        ? options.includes(value)
+        : Object.keys(options).includes(value)
+
+      if (!exists && value) {
+        assetService
+          .createFolder(value)
+          .then(() => {
+            // If successful, maybe add to options locally
+            if (Array.isArray(widget.options.values)) {
+              // @ts-ignore
+              widget.options.values.push(value)
+            }
+          })
+          .catch((err) => {
+            console.error('Failed to create folder:', err)
+          })
+      }
+    }
   }
 
   return widget

@@ -15,11 +15,18 @@ const WidgetInputText = defineAsyncComponent(
 const WidgetInputNumber = defineAsyncComponent(
   () => import('../components/WidgetInputNumber.vue')
 )
+const WidgetInputNumberSlider = defineAsyncComponent(
+  () => import('../components/WidgetInputNumberSlider.vue')
+)
 const WidgetToggleSwitch = defineAsyncComponent(
   () => import('../components/WidgetToggleSwitch.vue')
 )
 const WidgetSelect = defineAsyncComponent(
   () => import('../components/WidgetSelect.vue')
+)
+
+const WidgetSection = defineAsyncComponent(
+  () => import('../components/WidgetSection.vue')
 )
 const WidgetColorPicker = defineAsyncComponent(
   () => import('../components/WidgetColorPicker.vue')
@@ -63,8 +70,10 @@ export const FOR_TESTING = {
   WidgetInputText,
   WidgetMarkdown,
   WidgetSelect,
+  WidgetSection,
   WidgetTextarea,
-  WidgetToggleSwitch
+  WidgetToggleSwitch,
+  WidgetInputNumberSlider
 } as const
 
 interface WidgetDefinition {
@@ -91,7 +100,15 @@ const coreWidgetDefinitions: Array<[string, WidgetDefinition]> = [
     'float',
     {
       component: WidgetInputNumber,
-      aliases: ['FLOAT', 'number', 'slider'],
+      aliases: ['FLOAT', 'number'],
+      essential: true
+    }
+  ],
+  [
+    'slider',
+    {
+      component: WidgetInputNumberSlider,
+      aliases: [],
       essential: true
     }
   ],
@@ -106,6 +123,10 @@ const coreWidgetDefinitions: Array<[string, WidgetDefinition]> = [
   [
     'combo',
     { component: WidgetSelect, aliases: ['COMBO', 'asset'], essential: true }
+  ],
+  [
+    'section',
+    { component: WidgetSection, aliases: ['SECTION'], essential: true }
   ],
   [
     'color',

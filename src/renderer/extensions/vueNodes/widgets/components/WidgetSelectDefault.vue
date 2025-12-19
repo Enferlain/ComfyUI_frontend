@@ -3,22 +3,33 @@
     <Select
       v-model="modelValue"
       :invalid
-      :filter="selectOptions.length > 4"
-      :auto-filter-focus="selectOptions.length > 4"
-      :options="selectOptions"
+      :options="filteredOptions"
+      :editable="widget.options?.editable"
       v-bind="combinedProps"
-      :class="cn(WidgetInputBaseClass, 'w-full text-xs')"
+      :class="[
+        cn(WidgetInputBaseClass, 'w-full text-xs'),
+        { 'cursor-text!': widget.options?.editable }
+      ]"
       :aria-label="widget.name"
       size="small"
       :pt="{
         option: 'text-xs',
-        dropdown: 'w-8',
-        label: cn('truncate min-w-[4ch]', $slots.default && 'mr-5'),
+        dropdown: 'w-8 cursor-pointer!',
+        label: ({ props }) => ({
+          class: [
+            'truncate min-w-[4ch]',
+            props.editable ? 'cursor-text' : 'cursor-pointer',
+            !props.modelValue && $slots.default && 'mr-5' // Simplify cn logic
+          ]
+        }),
         overlay: 'w-fit min-w-full'
       }"
       data-capture-wheel="true"
     />
-    <div class="absolute top-5 right-8 h-4 w-7 -translate-y-4/5 flex">
+    <div
+      v-if="$slots.default"
+      class="absolute top-5 right-8 h-4 w-7 -translate-y-4/5 flex"
+    >
       <slot />
     </div>
   </WidgetLayoutField>
@@ -64,9 +75,22 @@ const selectOptions = computed(() => {
 
   return []
 })
-const invalid = computed(
-  () => !!modelValue.value && !selectOptions.value.includes(modelValue.value)
-)
+const filteredOptions = computed(() => {
+  const options = selectOptions.value
+  if (!props.widget.options?.editable) return options
+
+  const searchValue = (modelValue.value || '').toLowerCase()
+  if (!searchValue) return options
+
+  return options.filter((option) =>
+    String(option).toLowerCase().includes(searchValue)
+  )
+})
+
+const invalid = computed(() => {
+  if (props.widget.options?.editable) return false
+  return !!modelValue.value && !selectOptions.value.includes(modelValue.value)
+})
 
 const combinedProps = computed(() => ({
   ...filterWidgetProps(props.widget.options, PANEL_EXCLUDED_PROPS),

@@ -7,7 +7,7 @@ import { cn } from '@/utils/tailwindUtil'
 defineProps<{
   widget: Pick<
     SimplifiedWidget<string | number | undefined>,
-    'name' | 'label' | 'borderStyle'
+    'name' | 'label' | 'borderStyle' | 'options'
   >
 }>()
 
@@ -17,6 +17,7 @@ const hideLayoutField = inject<boolean>('hideLayoutField', false)
 <template>
   <div
     class="grid grid-cols-subgrid min-w-0 justify-between gap-1 text-node-component-slot-text"
+    :class="{ 'pl-3 border-l-2 border-slate-700/50': widget.options?.section }"
   >
     <div v-if="!hideLayoutField" class="truncate content-center-safe">
       <template v-if="widget.name">

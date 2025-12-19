@@ -397,31 +397,34 @@
     --p-toast-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
 
     /* Error Toast - Deep Purple with Red accent */
-    --p-toast-error-background: rgba(35, 32, 52, 0.95) !important;
+    /* --p-toast-message-error: #E2E0EC !important;
+    --p-toast-message-text: #E2E0EC !important; */
+
+    /* --p-toast-error-background: rgba(35, 32, 52, 0.95) !important;
     --p-toast-error-border-color: rgba(255, 68, 68, 0.4) !important;
     --p-toast-error-color: #E2E0EC !important;
-    --p-toast-error-detail-color: #948FB2 !important;
+    --p-toast-error-detail-color: #948FB2 !important; */
     --p-toast-error-close-button-hover-background: rgba(255, 68, 68, 0.15) !important;
 
     /* Warning Toast - Deep Purple with Gold accent */
-    --p-toast-warn-background: rgba(35, 32, 52, 0.95) !important;
+    /* --p-toast-warn-background: rgba(35, 32, 52, 0.95) !important;
     --p-toast-warn-border-color: rgba(253, 171, 52, 0.4) !important;
     --p-toast-warn-color: #E2E0EC !important;
-    --p-toast-warn-detail-color: #948FB2 !important;
+    --p-toast-warn-detail-color: #948FB2 !important; */
     --p-toast-warn-close-button-hover-background: rgba(253, 171, 52, 0.15) !important;
 
     /* Success Toast - Deep Purple with Green accent */
-    --p-toast-success-background: rgba(35, 32, 52, 0.95) !important;
+    /* --p-toast-success-background: rgba(35, 32, 52, 0.95) !important;
     --p-toast-success-border-color: rgba(0, 205, 114, 0.4) !important;
     --p-toast-success-color: #E2E0EC !important;
-    --p-toast-success-detail-color: #948FB2 !important;
+    --p-toast-success-detail-color: #948FB2 !important; */
     --p-toast-success-close-button-hover-background: rgba(0, 205, 114, 0.15) !important;
 
     /* Info Toast - Deep Purple with Violet accent */
-    --p-toast-info-background: rgba(35, 32, 52, 0.95) !important;
+    /* --p-toast-info-background: rgba(35, 32, 52, 0.95) !important;
     --p-toast-info-border-color: rgba(139, 92, 246, 0.4) !important;
     --p-toast-info-color: #E2E0EC !important;
-    --p-toast-info-detail-color: #948FB2 !important;
+    --p-toast-info-detail-color: #948FB2 !important; */
     --p-toast-info-close-button-hover-background: rgba(139, 92, 246, 0.15) !important;
 }
 
@@ -533,14 +536,14 @@
    ========================================================================== */
 
 /* Base Toast Message Styling */
-.p-toast-message {
+/* .p-toast-message {
     backdrop-filter: blur(10px) !important;
     border-radius: 8px !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Error Toast */
-.p-toast-message-error {
+/* .p-toast-message-error {
     background: rgba(35, 32, 52, 0.95) !important;
     border-left: 4px solid rgba(255, 68, 68, 0.8) !important;
     border-color: rgba(255, 68, 68, 0.4) !important;
@@ -561,7 +564,7 @@
 }
 
 /* Warning Toast */
-.p-toast-message-warn {
+/* .p-toast-message-warn {
     background: rgba(35, 32, 52, 0.95) !important;
     border-left: 4px solid rgba(253, 171, 52, 0.8) !important;
     border-color: rgba(253, 171, 52, 0.4) !important;
@@ -582,7 +585,7 @@
 }
 
 /* Success Toast */
-.p-toast-message-success {
+/* .p-toast-message-success {
     background: rgba(35, 32, 52, 0.95) !important;
     border-left: 4px solid rgba(0, 205, 114, 0.8) !important;
     border-color: rgba(0, 205, 114, 0.4) !important;
@@ -603,7 +606,7 @@
 }
 
 /* Info Toast */
-.p-toast-message-info {
+/* .p-toast-message-info {
     background: rgba(35, 32, 52, 0.95) !important;
     border-left: 4px solid rgba(139, 92, 246, 0.8) !important;
     border-color: rgba(139, 92, 246, 0.4) !important;
@@ -624,7 +627,7 @@
 }
 
 /* Toast Icon Colors */
-.p-toast-message-error .p-toast-message-icon {
+/* .p-toast-message-error .p-toast-message-icon {
     color: #ff4444 !important;
 }
 
@@ -641,7 +644,7 @@
 }
 
 /* Toast Close Button */
-.p-toast-icon-close {
+/* .p-toast-icon-close {
     color: #948FB2 !important;
 }
 

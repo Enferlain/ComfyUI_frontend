@@ -62,6 +62,7 @@ import { getOrderedInputSpecs } from '@/workbench/utils/nodeDefOrderingUtil'
 
 import { useExtensionService } from './extensionService'
 import { useMaskEditor } from '@/composables/maskeditor/useMaskEditor'
+import { setupConditionalVisibility } from './useConditionalVisibility'
 
 export interface HasInitialMinSize {
   _initialMinSize: { width: number; height: number }
@@ -173,7 +174,9 @@ export const useLitegraphService = () => {
       widget.options ??= {}
       Object.assign(widget.options, {
         advanced: inputSpec.advanced,
-        hidden: inputSpec.hidden
+        advanced: inputSpec.advanced,
+        hidden: inputSpec.hidden,
+        if: inputSpec.if
       })
     }
 
@@ -207,7 +210,44 @@ export const useLitegraphService = () => {
 
     // Create sockets and widgets in the determined order
     for (const inputSpec of orderedInputSpecs) addInputSocket(node, inputSpec)
-    for (const inputSpec of orderedInputSpecs) addInputWidget(node, inputSpec)
+
+    let currentSection: string | undefined
+    for (const inputSpec of orderedInputSpecs) {
+      // Handle section grouping
+      const section = inputSpec.section
+      if (section && section !== currentSection) {
+        currentSection = section
+        // Add section widget
+        const sectionWidgetCtor = widgetStore.widgets.get('SECTION')
+        if (sectionWidgetCtor) {
+          const { widget } =
+            sectionWidgetCtor(
+              node,
+              section,
+              { default: true, forceInput: true }, // Expanded by default
+              app
+            ) ?? {}
+          if (widget) {
+            widget.label = section
+            // Ensure section widget doesn't have a socket
+            if (widget.options) widget.options.socketless = true
+          }
+        }
+      }
+
+      // Inject dependency on section visibility
+      let widgetInputSpec = inputSpec
+      if (currentSection) {
+        widgetInputSpec = {
+          ...inputSpec,
+          if: { ...inputSpec.if, [currentSection]: false }
+        }
+      }
+
+      addInputWidget(node, widgetInputSpec)
+    }
+
+    setupConditionalVisibility(node)
   }
 
   /**

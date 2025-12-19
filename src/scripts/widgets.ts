@@ -17,6 +17,7 @@ import { useImageCompareWidget } from '@/renderer/extensions/vueNodes/widgets/co
 import { useImageUploadWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useImageUploadWidget'
 import { useIntWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useIntWidget'
 import { useMarkdownWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useMarkdownWidget'
+import { useSectionWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useSectionWidget'
 import { useStringWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useStringWidget'
 import { useTextareaWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useTextareaWidget'
 import { transformInputSpecV1ToV2 } from '@/schemas/nodeDef/migration'
@@ -298,6 +299,7 @@ export const ComfyWidgets = {
   CHART: transformWidgetConstructorV2ToV1(useChartWidget()),
   GALLERIA: transformWidgetConstructorV2ToV1(useGalleriaWidget()),
   TEXTAREA: transformWidgetConstructorV2ToV1(useTextareaWidget()),
+  SECTION: transformWidgetConstructorV2ToV1(useSectionWidget()),
   ...dynamicWidgets
 } as const
 
