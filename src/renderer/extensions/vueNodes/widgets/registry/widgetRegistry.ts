@@ -28,6 +28,9 @@ const WidgetSelect = defineAsyncComponent(
 const WidgetSection = defineAsyncComponent(
   () => import('../components/WidgetSection.vue')
 )
+const WidgetMultiSelect = defineAsyncComponent(
+  () => import('../components/WidgetMultiSelect.vue')
+)
 const WidgetColorPicker = defineAsyncComponent(
   () => import('../components/WidgetColorPicker.vue')
 )
@@ -127,6 +130,10 @@ const coreWidgetDefinitions: Array<[string, WidgetDefinition]> = [
   [
     'section',
     { component: WidgetSection, aliases: ['SECTION'], essential: true }
+  ],
+  [
+    'multiselect',
+    { component: WidgetMultiSelect, aliases: ['MULTISELECT'], essential: false }
   ],
   [
     'color',

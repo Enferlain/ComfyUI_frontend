@@ -20,6 +20,7 @@ import { useMarkdownWidget } from '@/renderer/extensions/vueNodes/widgets/compos
 import { useSectionWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useSectionWidget'
 import { useStringWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useStringWidget'
 import { useTextareaWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useTextareaWidget'
+import { useMultiSelectWidget } from '@/renderer/extensions/vueNodes/widgets/composables/useMultiSelectWidget'
 import { transformInputSpecV1ToV2 } from '@/schemas/nodeDef/migration'
 import type { InputSpec as InputSpecV2 } from '@/schemas/nodeDef/nodeDefSchemaV2'
 import type { InputSpec } from '@/schemas/nodeDefSchema'
@@ -300,6 +301,7 @@ export const ComfyWidgets = {
   GALLERIA: transformWidgetConstructorV2ToV1(useGalleriaWidget()),
   TEXTAREA: transformWidgetConstructorV2ToV1(useTextareaWidget()),
   SECTION: transformWidgetConstructorV2ToV1(useSectionWidget()),
+  MULTISELECT: transformWidgetConstructorV2ToV1(useMultiSelectWidget()),
   ...dynamicWidgets
 } as const
 
