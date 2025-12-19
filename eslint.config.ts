@@ -75,7 +75,9 @@ export default defineConfig([
       'src/types/generatedManagerTypes.ts',
       'src/types/vue-shim.d.ts',
       'test-results/*',
-      'vitest.setup.ts'
+      'vitest.setup.ts',
+      'lint-staged.config.js',
+      'eslint.config.ts'
     ]
   },
   {
